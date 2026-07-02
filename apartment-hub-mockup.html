@@ -41,6 +41,8 @@
   .tabs{display:flex;gap:3px;background:rgba(255,255,255,.05);padding:4px;border-radius:999px;border:1px solid var(--gl)}
   .tabs button{font-family:'Jost',sans-serif;font-weight:400;font-size:13px;letter-spacing:.04em;color:var(--dark-ink-2);border:none;background:transparent;padding:9px 20px;border-radius:999px;cursor:pointer;transition:.24s}
   .tabs button.on{background:var(--gold);color:var(--green-3);font-weight:500}
+  .backlink{display:grid;place-items:center;width:34px;height:34px;border-radius:50%;border:1px solid var(--gl);color:var(--dark-ink);text-decoration:none;font-size:20px;line-height:1;transition:.2s;flex:0 0 auto}
+  .backlink:hover{border-color:var(--gold);color:var(--gold-2)}
 
   section.view{display:none}
   section.view.on{display:block;animation:rise .6s cubic-bezier(.2,.7,.2,1) both}
@@ -321,6 +323,7 @@
 <header class="bar">
   <div class="wrap bar-in">
     <div style="display:flex;align-items:center;gap:13px">
+      <a href="index.html" class="backlink" title="Back to menu" aria-label="Back">&#8249;</a>
       <span class="logo"><svg viewBox="0 0 44 44"><circle cx="22" cy="22" r="20.4" fill="none" stroke="var(--gold)" stroke-width="1.1"/><circle cx="17.6" cy="22" r="10" fill="var(--ivory)"/><path d="M17.6 12a10 10 0 0 1 0 20z" fill="var(--gold)"/></svg></span>
       <span class="wordmark"><span class="t">the</span><span class="o">Oliver</span></span>
     </div>

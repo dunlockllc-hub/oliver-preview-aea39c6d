@@ -28,6 +28,8 @@
   .top{background:radial-gradient(130% 130% at 84% -20%,var(--green-2),var(--green) 46%,var(--green-3));color:var(--dark-ink);padding:46px 50px;position:relative;overflow:hidden}
   .top::before{content:"";position:absolute;inset:0;background:radial-gradient(52% 60% at 88% 12%,rgba(196,169,98,.17),transparent 68%)}
   .top::after{content:"";position:absolute;right:-130px;top:-110px;width:440px;height:440px;border:1px solid var(--gl);border-radius:50%}
+  .obacklink{position:relative;z-index:1;display:inline-flex;align-items:center;gap:6px;font-family:'Jost',sans-serif;font-size:12.5px;letter-spacing:.06em;color:var(--gold-2);text-decoration:none;margin-bottom:18px;transition:.2s}
+  .obacklink:hover{color:#fff}
   .brand{display:flex;align-items:center;gap:13px;position:relative;z-index:1}
   .logo svg{width:42px;height:42px}
   .brand .wm{font-family:'Jost',sans-serif;font-weight:300;letter-spacing:.02em;line-height:1}
@@ -127,6 +129,7 @@
 
 <div class="sheet">
   <div class="top">
+    <a href="index.html" class="obacklink">&#8249; Back to menu</a>
     <div class="brand">
       <span class="logo"><svg viewBox="0 0 44 44"><circle cx="22" cy="22" r="20.4" fill="none" stroke="var(--gold)" stroke-width="1.1"/><circle cx="17.6" cy="22" r="10" fill="var(--ivory)"/><path d="M17.6 12a10 10 0 0 1 0 20z" fill="var(--gold)"/></svg></span>
       <span class="wm"><span class="t">the</span><span class="o">Oliver</span></span>
