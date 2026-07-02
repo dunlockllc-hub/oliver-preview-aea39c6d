@@ -397,32 +397,6 @@
     </div>
   </div>
 
-  <div class="wrap band" style="padding-top:0">
-    <hr class="hr-gold" />
-    <div class="band-head"><span class="eyebrow">The cost of growing</span>
-      <h2 class="disp">Per-unit software punishes growth. <em style="font-style:normal;color:var(--gold-deep)">The Oliver doesn't.</em></h2>
-      <p>Drag your portfolio size. Watch per-unit pricing climb — while The Oliver stays flat.</p></div>
-    <div class="calc">
-      <div class="calc-top">
-        <div class="calc-units"><span id="cu">400</span> units</div>
-        <input type="range" id="unitSlider" min="300" max="2000" value="400" step="10" />
-        <div class="calc-scale"><span>300 doors</span><span>2,000 doors</span></div>
-      </div>
-      <div class="crow">
-        <div class="cl">Per-unit software<span class="tiny">~$5 / unit / month</span></div>
-        <div class="cbar-wrap"><div class="cbar comp" id="compBar"></div></div>
-        <div class="cval" id="compVal">$2,000</div>
-      </div>
-      <div class="crow us">
-        <div class="cl">The Oliver<span class="tiny">flat — every month</span></div>
-        <div class="cbar-wrap"><div class="cbar olv" id="olvBar"></div></div>
-        <div class="cval" id="olvVal">$1,450</div>
-      </div>
-      <div class="calc-note" id="saveNote"></div>
-    </div>
-    <div class="disclaimer">Illustrative — the shape of the model, not a quote. Your actual pricing set together.</div>
-  </div>
-
   <div class="wrap" style="padding-bottom:20px">
     <div class="cap">
       <div class="head"><span class="eyebrow" style="color:var(--gold-2)">One platform · every function</span>
@@ -829,23 +803,6 @@
   function show(v){views.forEach(s=>s.classList.toggle('on',s.id===v));tabs.forEach(b=>b.classList.toggle('on',b.dataset.v===v));window.scrollTo({top:0,behavior:'smooth'})}
   tabs.forEach(b=>b.addEventListener('click',()=>show(b.dataset.v)));
   document.querySelectorAll('[data-jump]').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();show(a.dataset.jump)}));
-
-  // cost calculator
-  const RATE=5, FLAT=1450, MAXREF=10000;
-  const sl=document.getElementById('unitSlider');
-  function calc(){
-    const u=+sl.value, comp=u*RATE;
-    document.getElementById('cu').textContent=u.toLocaleString();
-    document.getElementById('compVal').textContent='$'+comp.toLocaleString();
-    document.getElementById('olvVal').textContent='$'+FLAT.toLocaleString();
-    document.getElementById('compBar').style.width=Math.min(100,comp/MAXREF*100)+'%';
-    document.getElementById('olvBar').style.width=(FLAT/MAXREF*100)+'%';
-    const diff=comp-FLAT;
-    document.getElementById('saveNote').innerHTML = diff>0
-      ? 'At '+u.toLocaleString()+' doors, that’s <b>$'+diff.toLocaleString()+'/month</b> less with The Oliver — and every door you add widens the gap.'
-      : 'Right about even here — but per-unit keeps climbing with every door, while The Oliver holds flat.';
-  }
-  sl.addEventListener('input',calc); calc();
 </script>
 </body>
 </html>
