@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>The Oliver vs. AppFolio vs. Hello Alfred</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@200;300;400;500;600&family=Manrope:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --green:#16302A; --green-2:#20423A; --green-3:#0E221D; --gl:rgba(226,214,180,.14);
+    --ivory:#F4F1E8; --card:#FFFFFF; --ink:#16302A; --ink-2:#5B6B63; --ink-3:#97A29B;
+    --line:#E7E2D4; --line-2:#DAD4C4;
+    --gold:#C4A962; --gold-2:#DEC988; --gold-deep:#A98D45; --gold-soft:#F1EBD8;
+    --paid:#3F7D5F; --due:#AD8636; --late:#B5544A; --info:#5C8A9C;
+    --dark-ink:#EDEADE; --dark-ink-2:#A4B2AB;
+    --sh:0 34px 80px -40px rgba(14,34,29,.62);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--ivory);color:var(--ink);font-family:'Manrope',sans-serif;-webkit-font-smoothing:antialiased;line-height:1.55}
+  .disp{font-family:'Jost',sans-serif;font-weight:300;letter-spacing:-.01em}
+  .eyebrow{font-family:'Jost',sans-serif;font-weight:500;font-size:11.5px;letter-spacing:.32em;text-transform:uppercase;color:var(--gold-deep)}
+  .ic{width:1em;height:1em;display:inline-block;vertical-align:middle;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto}
+  .sheet{max-width:1000px;margin:30px auto;background:var(--card);border-radius:26px;box-shadow:var(--sh);overflow:hidden}
+  .pad{padding:42px 50px}
+
+  .top{background:radial-gradient(130% 130% at 84% -20%,var(--green-2),var(--green) 46%,var(--green-3));color:var(--dark-ink);padding:46px 50px;position:relative;overflow:hidden}
+  .top::before{content:"";position:absolute;inset:0;background:radial-gradient(52% 60% at 88% 12%,rgba(196,169,98,.17),transparent 68%)}
+  .top::after{content:"";position:absolute;right:-130px;top:-110px;width:440px;height:440px;border:1px solid var(--gl);border-radius:50%}
+  .brand{display:flex;align-items:center;gap:13px;position:relative;z-index:1}
+  .logo svg{width:42px;height:42px}
+  .brand .wm{font-family:'Jost',sans-serif;font-weight:300;letter-spacing:.02em;line-height:1}
+  .brand .wm .t{font-size:12px;opacity:.7;display:block;margin-bottom:-3px}
+  .brand .wm .o{font-size:21px}
+  .brand .wn{font-family:'Jost',sans-serif;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--dark-ink-2);padding:5px 10px;border:1px solid var(--gl);border-radius:999px}
+  .top h1{font-family:'Jost',sans-serif;font-weight:200;font-size:33px;line-height:1.1;letter-spacing:-.015em;margin-top:24px;max-width:25ch;position:relative;z-index:1}
+  .top h1 em{font-style:normal;color:var(--gold-2)}
+  .top p{color:var(--dark-ink-2);font-size:15px;margin-top:14px;max-width:68ch;position:relative;z-index:1;line-height:1.6}
+  .top p em{color:var(--dark-ink);font-style:normal;font-weight:600}
+
+  h2.sec{font-family:'Jost',sans-serif;font-weight:300;font-size:26px;letter-spacing:-.01em;margin:8px 0 2px}
+  .hr-gold{width:42px;height:2px;background:var(--gold);border:none;margin-bottom:14px}
+
+  .three{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:22px}
+  .wb{border:1px solid var(--line);border-radius:16px;padding:24px;background:var(--ivory)}
+  .wb.us{background:var(--green);border:none;color:var(--dark-ink)}
+  .wb .n{font-family:'Jost',sans-serif;font-weight:400;font-size:20px}
+  .wb .role{font-family:'Jost',sans-serif;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;margin:5px 0 13px}
+  .wb.af .role{color:var(--info)} .wb.ha .role{color:var(--gold-deep)} .wb.us .role{color:var(--gold-2)}
+  .wb p{font-size:12.5px;color:var(--ink-2)} .wb.us p{color:var(--dark-ink-2)}
+  .wb .gap{display:flex;gap:8px;align-items:flex-start;font-size:12px;font-weight:600;margin-top:13px;color:var(--late)}
+  .wb.us .gap{color:var(--gold-2)} .wb .gap .ic{font-size:15px;margin-top:1px}
+
+  table{width:100%;border-collapse:collapse;margin-top:20px;font-size:12.5px}
+  thead th{text-align:left;padding:10px 8px;font-family:'Jost',sans-serif;font-size:10.5px;font-weight:500;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-2);vertical-align:bottom}
+  thead th.c{text-align:center;width:14.5%}
+  thead th .sub{display:block;font-size:9px;color:var(--ink-3);margin-top:4px;letter-spacing:.04em}
+  thead th.usc{color:var(--gold-deep);background:var(--gold-soft);border-radius:12px 12px 0 0}
+  tbody td{padding:11px 8px;border-top:1px solid var(--line);vertical-align:middle}
+  tbody td.feat{font-weight:700;width:38%}
+  tbody td.c{text-align:center}
+  tbody td.usc{background:#FBF7EC}
+  tbody tr:last-child td.usc{border-radius:0 0 12px 12px}
+  .mk{display:inline-flex;flex-direction:column;align-items:center;gap:3px}
+  .mk .g{width:25px;height:25px;border-radius:7px;display:grid;place-items:center;font-size:14px}
+  .mk.yes .g{background:#E8F0EA;color:var(--paid)} .mk.no .g{background:#EFEBDD;color:var(--ink-3)} .mk.part .g{background:#F4ECD7;color:var(--due)}
+  .mk.yes.big .g{background:var(--gold);color:var(--green-3)}
+  .mk .cap{font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--ink-3)}
+  .note{font-family:'Jost',sans-serif;font-size:10.5px;letter-spacing:.03em;color:var(--ink-3);margin-top:12px}
+
+  .wedge{background:var(--green);color:var(--dark-ink);border-radius:20px;padding:32px;margin-top:26px;position:relative;overflow:hidden}
+  .wedge::after{content:"";position:absolute;right:-70px;top:-70px;width:300px;height:300px;border:1px solid var(--gl);border-radius:50%}
+  .wedge h3{font-family:'Jost',sans-serif;font-weight:200;font-size:25px;margin-top:8px;line-height:1.2;position:relative;z-index:1}
+  .wedge h3 em{font-style:normal;color:var(--gold-2)}
+  .rows{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-top:20px;position:relative;z-index:1}
+  .pc{background:rgba(255,255,255,.04);border:1px solid var(--gl);border-radius:14px;padding:18px}
+  .pc.us{background:rgba(196,169,98,.13);border-color:rgba(196,169,98,.4)}
+  .pc .nm{font-family:'Jost',sans-serif;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--dark-ink-2)}
+  .pc.us .nm{color:var(--gold-2)}
+  .pc .pr{font-family:'Jost',sans-serif;font-size:21px;font-weight:300;color:#fff;margin-top:8px;line-height:1.2}
+  .pc .d{font-size:11.5px;color:var(--dark-ink-2);margin-top:8px;line-height:1.5}
+
+  .why{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:18px}
+  .wc{background:var(--ivory);border:1px solid var(--line);border-radius:16px;padding:24px}
+  .wc .ico{width:48px;height:48px;border-radius:50%;border:1px solid var(--gold);color:var(--gold-deep);display:grid;place-items:center;font-size:22px;margin-bottom:16px}
+  .wc h4{font-family:'Jost',sans-serif;font-weight:400;font-size:17px}
+  .wc p{font-size:12.5px;color:var(--ink-2);margin-top:8px}
+  .built{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:20px}
+  .bcol{border:1px solid var(--line);border-radius:16px;padding:24px;background:var(--ivory)}
+  .bcol.own{background:var(--green);border:none;color:var(--dark-ink)}
+  .bcol .hd{font-family:'Jost',sans-serif;font-weight:400;font-size:17px}
+  .bcol.own .hd{color:#fff}
+  .bcol .sb{font-size:11px;color:var(--ink-3);margin:3px 0 14px}
+  .bcol.own .sb{color:var(--dark-ink-2)}
+  .bcol .li{display:flex;gap:10px;align-items:center;font-size:12.5px;padding:6px 0;color:var(--ink)}
+  .bcol.own .li{color:var(--dark-ink)}
+  .bcol .li .ic{font-size:15px;color:var(--gold-deep);flex:0 0 auto}
+  .bcol.own .li .ic{color:var(--gold-2)}
+  @media(max-width:720px){.built{grid-template-columns:1fr}}
+
+  .cta{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;border-top:1px solid var(--line);padding:28px 50px;background:var(--ivory)}
+  .cta .h{font-family:'Jost',sans-serif;font-weight:300;font-size:22px}
+  .cta .s{font-size:13px;color:var(--ink-2);margin-top:3px}
+  .cta .btn{background:var(--gold);color:var(--green-3);font-family:'Jost',sans-serif;font-weight:500;padding:15px 28px;border-radius:11px;font-size:15px;display:inline-flex;align-items:center;gap:9px}
+  .cta .btn .ic{font-size:18px}
+  .foot{font-family:'Jost',sans-serif;font-size:10px;letter-spacing:.04em;color:var(--ink-3);text-align:center;padding:16px 44px 22px;line-height:1.8}
+  @media print{body{background:#fff}.sheet{box-shadow:none;margin:0}.cta .btn{display:none}}
+  @media(max-width:720px){.three,.rows,.why{grid-template-columns:1fr}.pad,.top,.cta{padding-left:26px;padding-right:26px}}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6.5 9.5 17 4 11.5"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M6.5 6.5l11 11M17.5 6.5l-11 11"/></symbol>
+  <symbol id="i-dash" viewBox="0 0 24 24"><path d="M6 12h12"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h15M13 6l6 6-6 6"/></symbol>
+  <symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 3c.6 4.6 2 6 6.5 6.5C14 10 12.6 11.4 12 16c-.6-4.6-2-6-6.5-6.5C10 9 11.4 7.6 12 3z"/><path d="M18.5 14.5c.3 1.8.8 2.3 2.5 2.6-1.7.3-2.2.8-2.5 2.6-.3-1.8-.8-2.3-2.5-2.6 1.7-.3 2.2-.8 2.5-2.6z"/></symbol>
+  <symbol id="i-layers" viewBox="0 0 24 24"><path d="M12 3 3 8l9 5 9-5zM3 12l9 5 9-5M3 16l9 5 9-5"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3.5 19 6v5c0 4.5-3 7.6-7 9.5-4-1.9-7-5-7-9.5V6z"/><path d="M9 12l2 2 4-4"/></symbol>
+  <symbol id="i-card" viewBox="0 0 24 24"><rect x="2.5" y="5" width="19" height="14" rx="2.5"/><path d="M2.5 9.5h19M6 15h4"/></symbol>
+  <symbol id="i-usercheck" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M3.5 20a5.5 5.5 0 0 1 11 0M16 12l2 2 4-4"/></symbol>
+  <symbol id="i-key" viewBox="0 0 24 24"><circle cx="9" cy="10" r="4.5"/><path d="M12.2 12.8 20 20.5M17 18l2-2M14.2 15.2l2 2"/></symbol>
+  <symbol id="i-mega" viewBox="0 0 24 24"><path d="M4 10.5v3A1.5 1.5 0 0 0 5.5 15H7l1.3 4.4 2.2-.5L9.5 15 19 18.5V5.5L9.5 9H5.5A1.5 1.5 0 0 0 4 10.5zM19 9.5a3 3 0 0 1 0 5"/></symbol>
+</svg>
+
+<div class="sheet">
+  <div class="top">
+    <div class="brand">
+      <span class="logo"><svg viewBox="0 0 44 44"><circle cx="22" cy="22" r="20.4" fill="none" stroke="var(--gold)" stroke-width="1.1"/><circle cx="17.6" cy="22" r="10" fill="var(--ivory)"/><path d="M17.6 12a10 10 0 0 1 0 20z" fill="var(--gold)"/></svg></span>
+      <span class="wm"><span class="t">the</span><span class="o">Oliver</span></span>
+      <span class="wn">the platform</span>
+    </div>
+    <h1 class="disp"><span style="display:block;font-size:.52em;font-weight:300;opacity:.42;letter-spacing:.01em;margin-bottom:6px">AppFolio's back office. Hello Alfred's resident love.</span><b style="color:#fff;font-weight:600">The Oliver is both</b> <em>— one assisted platform, no per-door tax.</em></h1>
+    <p>The two leaders each own half the problem — and both charge per unit. AppFolio runs the back office, but <em>you</em> operate it. Hello Alfred delights residents, but only atop a system you already pay for. The Oliver is both — operations <em>and</em> experience, assisted end to end and <em>run for you</em>, at one flat price that doesn't grow per door.</p>
+  </div>
+
+  <div class="pad">
+    <hr class="hr-gold" /><span class="eyebrow">The landscape</span>
+    <h2 class="sec disp">The leaders each own half. We own both.</h2>
+    <div class="three">
+      <div class="wb af"><div class="n disp">AppFolio</div><div class="role">Back-office leader</div>
+        <p>Accounting, leasing, maintenance, owner portals, agentic AI (Realm-X). Deep and powerful.</p>
+        <div class="gap"><svg class="ic"><use href="#i-x"/></svg> You operate it · per-unit + steep minimums · no resident experience</div></div>
+      <div class="wb ha"><div class="n disp">Hello Alfred</div><div class="role">Experience leader</div>
+        <p>Concierge marketplace, amenities, onboarding, Alfred Assist AI, resident comms.</p>
+        <div class="gap"><svg class="ic"><use href="#i-x"/></svg> Rides on your PMS · per-unit · no accounting or leasing</div></div>
+      <div class="wb us"><div class="n disp">The Oliver</div><div class="role">Both — assisted, for you</div>
+        <p>The full back office <b>and</b> the resident experience, automated end-to-end and operated on your behalf.</p>
+        <div class="gap"><svg class="ic"><use href="#i-check"/></svg> One platform · flat monthly · scales without per-door cost</div></div>
+    </div>
+  </div>
+
+  <div class="pad" style="padding-top:4px">
+    <span class="eyebrow">Feature by feature</span>
+    <h2 class="sec disp">Who actually covers what</h2>
+    <table>
+      <thead><tr><th>Capability</th>
+        <th class="c">AppFolio<span class="sub">back office</span></th>
+        <th class="c">Hello Alfred<span class="sub">experience</span></th>
+        <th class="c usc">The Oliver<span class="sub">both · assisted · for you</span></th></tr></thead>
+      <tbody>
+        <tr><td class="feat">Accounting &amp; rent collection (autopay)</td>
+          <td class="c"><span class="mk yes"><span class="g"><svg class="ic"><use href="#i-check"/></svg></span></span></td>
+          <td class="c"><span class="mk part"><span class="g"><svg class="ic"><use href="#i-dash"/></svg></span><span class="cap">on PMS</span></span></td>
+          <td class="c usc"><span class="mk yes big"><span class="g"><svg class="ic"><use href="#i-check"/></svg></span></span></td></tr>
+        <tr><td class="feat">Leasing, e-sign &amp; marketing</td>
+          <td class="c"><span class="mk yes"><span class="g"><svg class="ic"><use href="#i-check"/></svg></span></span></td>
+          <td class="c"><span class="mk no"><span class="g"><svg class="ic"><use href="#i-x"/></svg></span></span></td>
+          <td class="c usc"><span class="mk yes big"><span class="g"><svg class="ic"><use href="#i-check"/></svg></span></span></td></tr>
+        <tr><td class="feat">Applicant screening</td>
+          <td class="c"><span class="mk yes"><span class="g"><svg class="ic"><use href="#i-check"/></svg></span></span></td>
+          <td class="c"><span class="mk no"><span class="g"><svg class="ic"><use href="#i-x"/></svg></span></span></td>
+          <td class="c usc"><span class="mk yes big"><span class="g"><svg class="ic"><use href="#i-check"/></svg></span></span></td></tr>
+        <tr><td class="feat">Assisted maintenance — triage &amp; dispatch</td>
+          <td class="c"><span class="mk yes"><span class="g"><svg class="ic"><use href="#i-check"/></svg></span><span class="cap">Realm-X</span></span></td>
+          <td class="c"><span class="mk part"><span class="g"><svg class="ic"><use href="#i-dash"/></svg></span><span class="cap">intake</span></span></td>
+          <td class="c usc"><span class="mk yes big"><span class="g"><svg class="ic"><use href="#i-check"/></svg></span></span></td></tr>
+        <tr><td class="feat">Inspections &amp; unit turns</td>
+          <td class="c"><span class="mk yes"><span class="g"><svg class="ic"><use href="#i-check"/></svg></span></span></td>
+          <td class="c"><span class="mk no"><span class="g"><svg class="ic"><use href="#i-x"/></svg></span></span></td>
+          <td class="c usc"><span class="mk yes big"><span class="g"><svg class="ic"><use href="#i-check"/></svg></span></span></td></tr>
+        <tr><td class="feat">Owner reporting &amp; portal</td>
+          <td class="c"><span class="mk yes"><span class="g"><svg class="ic"><use href="#i-check"/></svg></span></span></td>
+          <td class="c"><span class="mk no"><span class="g"><svg class="ic"><use href="#i-x"/></svg></span></span></td>
+          <td class="c usc"><span class="mk yes big"><span class="g"><svg class="ic"><use href="#i-check"/></svg></span></span></td></tr>
+        <tr><td class="feat">Concierge &amp; resident services</td>
+          <td class="c"><span class="mk no"><span class="g"><svg class="ic"><use href="#i-x"/></svg></span></span></td>
+          <td class="c"><span class="mk yes"><span class="g"><svg class="ic"><use href="#i-check"/></svg></span><span class="cap">their edge</span></span></td>
+          <td class="c usc"><span class="mk yes big"><span class="g"><svg class="ic"><use href="#i-check"/></svg></span></span></td></tr>
+        <tr><td class="feat">Amenities, packages &amp; access</td>
+          <td class="c"><span class="mk part"><span class="g"><svg class="ic"><use href="#i-dash"/></svg></span></span></td>
+          <td class="c"><span class="mk yes"><span class="g"><svg class="ic"><use href="#i-check"/></svg></span></span></td>
+          <td class="c usc"><span class="mk yes big"><span class="g"><svg class="ic"><use href="#i-check"/></svg></span></span></td></tr>
+        <tr><td class="feat">Assisted automation across the workflow</td>
+          <td class="c"><span class="mk yes"><span class="g"><svg class="ic"><use href="#i-check"/></svg></span></span></td>
+          <td class="c"><span class="mk part"><span class="g"><svg class="ic"><use href="#i-dash"/></svg></span><span class="cap">Assist</span></span></td>
+          <td class="c usc"><span class="mk yes big"><span class="g"><svg class="ic"><use href="#i-check"/></svg></span><span class="cap">Oliver</span></span></td></tr>
+        <tr><td class="feat">Everything on one synced record · lease → renewal</td>
+          <td class="c"><span class="mk part"><span class="g"><svg class="ic"><use href="#i-dash"/></svg></span><span class="cap">ops only</span></span></td>
+          <td class="c"><span class="mk no"><span class="g"><svg class="ic"><use href="#i-x"/></svg></span></span></td>
+          <td class="c usc"><span class="mk yes big"><span class="g"><svg class="ic"><use href="#i-check"/></svg></span></span></td></tr>
+        <tr><td class="feat">Who runs it day to day</td>
+          <td class="c"><span class="mk no"><span class="g"><svg class="ic"><use href="#i-x"/></svg></span><span class="cap">you</span></span></td>
+          <td class="c"><span class="mk part"><span class="g"><svg class="ic"><use href="#i-dash"/></svg></span><span class="cap">you+them</span></span></td>
+          <td class="c usc"><span class="mk yes big"><span class="g"><svg class="ic"><use href="#i-check"/></svg></span><span class="cap">we do</span></span></td></tr>
+        <tr><td class="feat">Priced without a per-unit tax</td>
+          <td class="c"><span class="mk no"><span class="g"><svg class="ic"><use href="#i-x"/></svg></span></span></td>
+          <td class="c"><span class="mk no"><span class="g"><svg class="ic"><use href="#i-x"/></svg></span></span></td>
+          <td class="c usc"><span class="mk yes big"><span class="g"><svg class="ic"><use href="#i-check"/></svg></span><span class="cap">flat</span></span></td></tr>
+        <tr><td class="feat">Scales to thousands of doors, flat</td>
+          <td class="c"><span class="mk no"><span class="g"><svg class="ic"><use href="#i-x"/></svg></span></span></td>
+          <td class="c"><span class="mk no"><span class="g"><svg class="ic"><use href="#i-x"/></svg></span></span></td>
+          <td class="c usc"><span class="mk yes big"><span class="g"><svg class="ic"><use href="#i-check"/></svg></span></span></td></tr>
+      </tbody>
+    </table>
+    <div class="note">check · covered — dash · partial or depends on another system — x · not covered. competitor capabilities vary by plan.</div>
+  </div>
+
+  <div class="pad" style="padding-top:4px">
+    <div class="wedge">
+      <span class="eyebrow" style="color:var(--gold-2)">The pricing wedge</span>
+      <h3 class="disp">Per-door pricing punishes you for growing. <em>We don't.</em></h3>
+      <div class="rows">
+        <div class="pc"><div class="nm">AppFolio</div><div class="pr">$1.40–$5 / unit / mo</div><div class="d">plus $280–$7,500 monthly minimums, plus $400–$5,000 onboarding. Small &amp; mid portfolios pay the most per door.</div></div>
+        <div class="pc"><div class="nm">Hello Alfred</div><div class="pr">Per-unit layer</div><div class="d">On top of the PMS you already pay for. Two bills, two systems, still no single operator.</div></div>
+        <div class="pc us"><div class="nm">The Oliver</div><div class="pr">One flat monthly fee</div><div class="d">We operate the whole hub. Add 50 doors or 500 — your price doesn't balloon per unit.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pad" style="padding-top:4px">
+    <span class="eyebrow">How it's built</span>
+    <h2 class="sec disp">We own the experience. We rent the rails — under one roof.</h2>
+    <p style="color:var(--ink-2);font-size:14px;margin-top:8px;max-width:66ch">Every rail is embedded. Residents and staff work entirely inside The Oliver — one login, one interface — never a separate vendor portal or redirect. And it's shaped to your property, not an off-the-shelf system you bend to fit.</p>
+    <div class="built">
+      <div class="bcol own">
+        <div class="hd disp">Built &amp; owned by The Oliver</div>
+        <div class="sb">The hard part — already live in a real portfolio</div>
+        <div class="li"><svg class="ic"><use href="#i-check"/></svg> The single synced record · lease → renewal</div>
+        <div class="li"><svg class="ic"><use href="#i-spark"/></svg> Oliver — your assistant &amp; automation</div>
+        <div class="li"><svg class="ic"><use href="#i-check"/></svg> Communications, maintenance, inspections, calendar</div>
+        <div class="li"><svg class="ic"><use href="#i-check"/></svg> Leasing, renewals, collections, accounting, reporting</div>
+        <div class="li"><svg class="ic"><use href="#i-check"/></svg> Resident app &amp; operations console</div>
+      </div>
+      <div class="bcol">
+        <div class="hd disp">Plugged in — best-in-class rails</div>
+        <div class="sb">Embedded &amp; invisible — the same providers the incumbents use, working behind the scenes</div>
+        <div class="li"><svg class="ic"><use href="#i-card"/></svg> Payments &amp; bank transfer (licensed processor)</div>
+        <div class="li"><svg class="ic"><use href="#i-usercheck"/></svg> Screening — credit, background, income, ID</div>
+        <div class="li"><svg class="ic"><use href="#i-shield"/></svg> Renters insurance (licensed carrier)</div>
+        <div class="li"><svg class="ic"><use href="#i-key"/></svg> Smart access &amp; IoT (device makers)</div>
+        <div class="li"><svg class="ic"><use href="#i-mega"/></svg> Listing syndication &amp; reviews (Zillow, Google)</div>
+      </div>
+    </div>
+    <div style="background:var(--green);color:var(--dark-ink);border-radius:16px;padding:22px 26px;margin-top:16px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;position:relative;overflow:hidden">
+      <div style="width:46px;height:46px;border-radius:50%;border:1px solid var(--gold);display:grid;place-items:center;flex:0 0 auto"><svg class="ic" style="font-size:22px;color:var(--gold-2)"><use href="#i-layers"/></svg></div>
+      <div style="flex:1;min-width:250px"><div class="disp" style="font-size:20px;color:#fff">One platform. One login. One system — for staff and residents alike.</div>
+      <div style="font-size:12.5px;color:var(--dark-ink-2);margin-top:5px">The rails run invisibly underneath. No one ever leaves The Oliver — no vendor portals, no redirects, no second app to learn.</div></div>
+    </div>
+    <div class="note">Regulated data — credit, background, income, ID — and money movement are handled by licensed partners, by law. The Oliver orchestrates them and lands every result on the synced record: lean core, regulated rails, one interface over all of it.</div>
+  </div>
+
+  <div class="pad" style="padding-top:4px">
+    <span class="eyebrow">Why The Oliver wins the room</span>
+    <h2 class="sec disp">An assisted platform — handed to you already running</h2>
+    <div class="why">
+      <div class="wc"><div class="ico"><svg class="ic"><use href="#i-spark"/></svg></div><h4>Oliver does the busywork</h4><p>Your assistant triages and dispatches maintenance, drafts rent reminders, answers residents 24/7, sends renewals, and reconciles payments.</p></div>
+      <div class="wc"><div class="ico"><svg class="ic"><use href="#i-layers"/></svg></div><h4>One synced record</h4><p>Every email, payment, and work order lives on one record — lead to lease to renewal, unit and resident always in sync. No PMS underneath, no app bolted on top, nothing to reconcile between systems.</p></div>
+      <div class="wc"><div class="ico"><svg class="ic"><use href="#i-shield"/></svg></div><h4>Operated for you, flat</h4><p>We don't sell software and walk away. We run it — the way it already runs a live portfolio — for one predictable price that scales.</p></div>
+    </div>
+  </div>
+
+  <div class="cta">
+    <div><div class="h disp">See it running on your community — live.</div><div class="s">A working walkthrough on your units, not a slide deck. 20 minutes.</div></div>
+    <div class="btn">Book the walkthrough <svg class="ic"><use href="#i-arrow"/></svg></div>
+  </div>
+  <div class="foot">The Oliver · built on a proven, live property-operations platform.<br />competitor pricing from published third-party sources, mid-2026 (appfolio core ~$1.40/unit, $280 min; max ~$5/unit, $7,500 min; onboarding $400–$5,000) — verify current rates &amp; feature availability before distribution.</div>
+</div>
+</body>
+</html>

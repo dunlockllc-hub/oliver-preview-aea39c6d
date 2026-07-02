@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>The Oliver — Resident & Operations Hub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@200;300;400;500;600&family=Manrope:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --green:#16302A; --green-2:#20423A; --green-3:#0E221D; --gl:rgba(226,214,180,.14);
+    --ivory:#F4F1E8; --card:#FFFFFF; --ink:#16302A; --ink-2:#5B6B63; --ink-3:#97A29B;
+    --line:#E7E2D4; --line-2:#DAD4C4;
+    --gold:#C4A962; --gold-2:#DEC988; --gold-deep:#A98D45; --gold-soft:#F1EBD8;
+    --paid:#3F7D5F; --paid-soft:#E8F0EA; --due:#AD8636; --due-soft:#F4ECD7;
+    --late:#B5544A; --late-soft:#F6E9E6; --info:#5C8A9C; --info-soft:#E9F1F3;
+    --dark-ink:#EDEADE; --dark-ink-2:#A4B2AB;
+    --sh:0 30px 70px -36px rgba(14,34,29,.6); --sh-sm:0 12px 30px -18px rgba(14,34,29,.4);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--ivory);color:var(--ink);font-family:'Manrope',sans-serif;-webkit-font-smoothing:antialiased;line-height:1.55;overflow-x:hidden}
+  .wrap{max-width:1220px;margin:0 auto;padding:0 32px}
+  .disp{font-family:'Jost',sans-serif;font-weight:300;letter-spacing:-.01em}
+  .eyebrow{font-family:'Jost',sans-serif;font-weight:500;font-size:12px;letter-spacing:.34em;text-transform:uppercase;color:var(--gold-deep)}
+  .num{font-family:'IBM Plex Mono',monospace}
+  .ic{width:1em;height:1em;display:inline-block;vertical-align:middle;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto}
+
+  /* logo */
+  .logo{display:inline-grid;place-items:center;width:40px;height:40px;flex:0 0 auto}
+  .logo svg{width:40px;height:40px}
+  .wordmark{font-family:'Jost',sans-serif;font-weight:300;letter-spacing:.02em;line-height:1}
+  .wordmark .t{font-size:12px;font-weight:400;opacity:.7;display:block;margin-bottom:-3px}
+  .wordmark .o{font-size:20px;font-weight:400}
+
+  /* header */
+  header.bar{position:sticky;top:0;z-index:60;background:rgba(22,48,42,.82);backdrop-filter:blur(16px);border-bottom:1px solid var(--gl)}
+  .bar-in{display:flex;align-items:center;justify-content:space-between;height:78px}
+  .bar .wordmark{color:var(--dark-ink)}
+  .tabs{display:flex;gap:3px;background:rgba(255,255,255,.05);padding:4px;border-radius:999px;border:1px solid var(--gl)}
+  .tabs button{font-family:'Jost',sans-serif;font-weight:400;font-size:13px;letter-spacing:.04em;color:var(--dark-ink-2);border:none;background:transparent;padding:9px 20px;border-radius:999px;cursor:pointer;transition:.24s}
+  .tabs button.on{background:var(--gold);color:var(--green-3);font-weight:500}
+
+  section.view{display:none}
+  section.view.on{display:block;animation:rise .6s cubic-bezier(.2,.7,.2,1) both}
+  @keyframes rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+  .btn{font-family:'Jost',sans-serif;font-weight:500;font-size:15px;letter-spacing:.02em;padding:15px 28px;border-radius:11px;cursor:pointer;border:none;transition:.24s;text-decoration:none;display:inline-flex;align-items:center;gap:10px}
+  .btn .ic{font-size:18px}
+  .btn.gold{background:var(--gold);color:var(--green-3)}
+  .btn.gold:hover{background:var(--gold-2);transform:translateY(-2px)}
+  .btn.line{background:transparent;color:var(--dark-ink);border:1px solid var(--gl)}
+  .btn.line:hover{border-color:var(--gold);color:var(--gold-2)}
+
+  /* HERO */
+  .hero{background:radial-gradient(130% 120% at 82% -10%,var(--green-2) 0%,var(--green) 45%,var(--green-3) 100%);color:var(--dark-ink);position:relative;overflow:hidden}
+  .hero::before{content:"";position:absolute;inset:0;background:radial-gradient(52% 55% at 86% 18%,rgba(196,169,98,.16),transparent 68%);pointer-events:none}
+  .hero::after{content:"";position:absolute;right:-140px;top:-120px;width:520px;height:520px;border:1px solid var(--gl);border-radius:50%;pointer-events:none}
+  .hero-in{padding:88px 0 78px;position:relative;z-index:1}
+  .hero h1{font-family:'Jost',sans-serif;font-weight:200;font-size:clamp(42px,6.6vw,80px);line-height:1.02;letter-spacing:-.02em;max-width:16ch;margin-top:26px}
+  .hero h1 em{font-style:normal;color:var(--gold-2)}
+  .hero .lede{font-size:19px;color:var(--dark-ink-2);max-width:58ch;margin-top:26px;line-height:1.6;font-weight:400}
+  .hero .cta{margin-top:36px;display:flex;gap:14px;flex-wrap:wrap}
+  .hero .metrics{display:flex;gap:0;flex-wrap:wrap;margin-top:56px;border-top:1px solid var(--gl)}
+  .metric{padding:26px 40px 4px 0;margin-right:40px}
+  .metric .n{font-family:'Jost',sans-serif;font-weight:200;font-size:34px;color:var(--gold-2);line-height:1}
+  .metric .l{font-size:12.5px;color:var(--dark-ink-2);margin-top:9px;max-width:19ch}
+
+  /* light band */
+  .band{padding:82px 0}
+  .band-head{max-width:62ch}
+  .band-head h2{font-family:'Jost',sans-serif;font-weight:300;font-size:clamp(29px,3.8vw,42px);letter-spacing:-.015em;line-height:1.08;margin-top:16px}
+  .band-head p{color:var(--ink-2);font-size:16px;margin-top:14px}
+  .hr-gold{width:44px;height:2px;background:var(--gold);border:none;margin-bottom:4px}
+
+  .cards3{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:44px}
+  .fcard{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:30px;box-shadow:var(--sh-sm);transition:.28s}
+  .fcard:hover{transform:translateY(-5px);box-shadow:var(--sh)}
+  .fcard .ico{width:50px;height:50px;border-radius:50%;border:1px solid var(--gold);color:var(--gold-deep);display:grid;place-items:center;font-size:23px;margin-bottom:22px}
+  .fcard h3{font-family:'Jost',sans-serif;font-weight:400;font-size:22px}
+  .fcard p{font-size:14.5px;color:var(--ink-2);margin-top:10px}
+  .fcard .swap{display:flex;flex-direction:column;gap:6px;margin-bottom:18px}
+  .swap .r{display:flex;align-items:center;gap:9px;font-size:11.5px;font-weight:600;letter-spacing:.02em}
+  .swap .r .ic{font-size:14px} .swap .from{color:var(--late)} .swap .to{color:var(--paid)}
+
+  /* capability grid (dark) */
+  .cap{background:var(--green);color:var(--dark-ink);border-radius:28px;padding:56px 52px;position:relative;overflow:hidden}
+  .cap::after{content:"";position:absolute;left:-120px;bottom:-120px;width:420px;height:420px;border:1px solid var(--gl);border-radius:50%}
+  .cap .head{max-width:58ch;position:relative;z-index:1}
+  .cap .head h2{font-family:'Jost',sans-serif;font-weight:200;font-size:clamp(28px,3.6vw,40px);line-height:1.1;letter-spacing:-.015em;margin-top:14px;color:#fff}
+  .cap .head h2 em{font-style:normal;color:var(--gold-2)}
+  .cap .head p{color:var(--dark-ink-2);font-size:15.5px;margin-top:12px}
+  .capgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;margin-top:44px;background:var(--gl);border:1px solid var(--gl);border-radius:16px;overflow:hidden;position:relative;z-index:1}
+  .capitem{background:var(--green);padding:24px 22px;transition:.25s}
+  .capitem:hover{background:var(--green-2)}
+  .capitem .ic{font-size:22px;color:var(--gold-2)}
+  .capitem h4{font-family:'Jost',sans-serif;font-weight:400;font-size:16px;margin-top:14px;color:#fff}
+  .capitem p{font-size:12px;color:var(--dark-ink-2);margin-top:5px;line-height:1.45}
+  .capcols{display:grid;grid-template-columns:repeat(4,1fr);gap:26px;margin-top:44px;position:relative;z-index:1}
+  .capcol h5{font-family:'Jost',sans-serif;font-weight:500;font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold-2);padding-bottom:13px;margin-bottom:5px;border-bottom:1px solid var(--gl)}
+  .capcol .ci{display:flex;align-items:center;gap:11px;padding:8px 0;font-size:13px;color:var(--dark-ink)}
+  .capcol .ci .ic{font-size:17px;color:var(--gold-2);flex:0 0 auto}
+  /* lifecycle */
+  .sync{margin-top:82px}
+  .lifecycle{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:40px;position:relative}
+  .lifecycle::before{content:"";position:absolute;top:19px;left:8%;right:8%;height:1px;background:var(--line)}
+  .stage{text-align:center;position:relative;padding:0 12px}
+  .stage .dot{width:38px;height:38px;border-radius:50%;background:var(--card);border:1px solid var(--gold);color:var(--gold-deep);display:grid;place-items:center;margin:0 auto 16px;font-size:18px;position:relative;z-index:1}
+  .stage h4{font-family:'Jost',sans-serif;font-weight:500;font-size:16px}
+  .stage p{font-size:12px;color:var(--ink-2);margin-top:7px;line-height:1.5}
+  /* calculator */
+  .calc{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:34px;box-shadow:var(--sh-sm);margin-top:40px}
+  .calc-top{margin-bottom:28px}
+  .calc-units{font-family:'Jost',sans-serif;font-weight:200;font-size:34px;letter-spacing:-.01em}
+  .calc-units span{color:var(--gold-deep);font-weight:400}
+  .calc input[type=range]{width:100%;margin-top:14px;accent-color:var(--gold);height:6px;cursor:pointer}
+  .calc-scale{display:flex;justify-content:space-between;font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--ink-3);margin-top:9px;letter-spacing:.04em}
+  .crow{display:grid;grid-template-columns:190px 1fr 108px;gap:18px;align-items:center;padding:16px 0}
+  .crow+.crow{border-top:1px solid var(--line)}
+  .cl{font-weight:700;font-size:14px}
+  .cl .tiny{display:block;font-family:'Jost',sans-serif;font-weight:400;font-size:11px;color:var(--ink-3);margin-top:2px}
+  .cbar-wrap{height:16px;background:#EEEBDE;border-radius:9px;overflow:hidden}
+  .cbar{height:100%;border-radius:9px;transition:width .2s cubic-bezier(.3,.7,.3,1);width:14%}
+  .cbar.comp{background:linear-gradient(90deg,#C98A2B,#B5544A)}
+  .cbar.olv{background:linear-gradient(90deg,var(--gold),var(--gold-2))}
+  .cval{font-family:'Jost',sans-serif;font-weight:200;font-size:26px;text-align:right;letter-spacing:-.01em}
+  .crow.us .cval{color:var(--gold-deep)}
+  .crow.us .cl .tiny{color:var(--gold-deep)}
+  .calc-note{margin-top:22px;padding-top:20px;border-top:1px solid var(--line);font-size:15px;color:var(--ink-2)}
+  .calc-note b{color:var(--gold-deep);font-weight:700}
+  .disclaimer{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--ink-3);margin-top:16px;letter-spacing:.02em}
+  /* ladder */
+  .guarantee{display:inline-flex;align-items:center;gap:10px;background:var(--green);color:#fff;border-radius:999px;padding:11px 20px;margin-top:20px;font-family:'Jost',sans-serif;font-weight:400;font-size:14px}
+  .guarantee .ic{font-size:18px;color:var(--gold-2)}
+  .guarantee b{font-weight:600}
+  .ladder{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:38px;align-items:stretch}
+  .rung{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:28px;box-shadow:var(--sh-sm);position:relative;overflow:hidden}
+  .rung.dest{background:var(--green);color:var(--dark-ink);border:none}
+  .rung.dest::after{content:"";position:absolute;right:-50px;bottom:-60px;width:200px;height:200px;background:radial-gradient(circle,rgba(196,169,98,.2),transparent 65%)}
+  .rung .num{position:absolute;top:20px;right:24px;font-family:'Jost',sans-serif;font-weight:200;font-size:46px;color:var(--line-2);line-height:1}
+  .rung.dest .num{color:rgba(255,255,255,.14)}
+  .rung .step{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold-deep);position:relative;z-index:1}
+  .rung.dest .step{color:var(--gold-2)}
+  .rung h4{font-family:'Jost',sans-serif;font-weight:400;font-size:21px;margin:10px 0 10px;position:relative;z-index:1}
+  .rung.dest h4{color:#fff}
+  .rung p{font-size:13px;color:var(--ink-2);position:relative;z-index:1} .rung.dest p{color:var(--dark-ink-2)}
+  .rung .chip{margin-top:15px;display:inline-flex;align-items:center;gap:7px;font-family:'Jost',sans-serif;font-weight:500;font-size:11px;letter-spacing:.04em;background:var(--gold-soft);color:var(--gold-deep);padding:7px 13px;border-radius:999px;position:relative;z-index:1}
+  .rung .price{margin-top:18px;padding-top:16px;border-top:1px solid var(--line);font-family:'Jost',sans-serif;font-weight:300;font-size:25px;color:var(--ink);letter-spacing:-.01em;position:relative;z-index:1}
+  .rung .price span{display:block;font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--ink-3);font-weight:400;letter-spacing:.04em;margin-top:5px}
+  .rung.dest .price{color:#fff;border-top-color:var(--gl)}
+  .rung.dest .price span{color:var(--dark-ink-2)}
+  @media(max-width:900px){.ladder{grid-template-columns:1fr}}
+  @media(max-width:560px){.crow{grid-template-columns:1fr auto;gap:8px 14px}.cbar-wrap{grid-column:1/-1;order:3}}
+  @media(max-width:980px){.capcols{grid-template-columns:1fr 1fr}.lifecycle{grid-template-columns:1fr 1fr;gap:32px 0}.lifecycle::before{display:none}}
+  @media(max-width:560px){.capcols{grid-template-columns:1fr}.lifecycle{grid-template-columns:1fr}}
+
+  .proof{margin-top:82px;display:flex;gap:48px;flex-wrap:wrap;align-items:center}
+  .proof .lead{flex:1 1 340px}
+  .proof h2{font-family:'Jost',sans-serif;font-weight:300;font-size:28px;line-height:1.22;margin-top:14px;letter-spacing:-.01em}
+  .proof h2 em{font-style:normal;color:var(--gold-deep)}
+  .proof .stk{display:flex;gap:44px;flex-wrap:wrap}
+  .pstat .n{font-family:'Jost',sans-serif;font-weight:200;font-size:46px;color:var(--ink);line-height:1}
+  .pstat .l{font-size:12.5px;color:var(--ink-2);margin-top:8px;max-width:15ch}
+
+  /* residents */
+  .sec-intro{padding:76px 0 0}
+  .sec-intro h1{font-family:'Jost',sans-serif;font-weight:200;font-size:clamp(32px,4.8vw,54px);letter-spacing:-.02em;line-height:1.02;margin-top:16px;max-width:20ch}
+  .phones{display:flex;gap:28px;justify-content:center;flex-wrap:wrap;padding:54px 0 88px}
+  .phone{width:296px;flex:0 0 auto}
+  .plabel{text-align:center;margin-bottom:18px}
+  .plabel b{font-family:'Jost',sans-serif;font-weight:400;color:var(--ink);font-size:15px;display:block}
+  .plabel span{font-family:'Jost',sans-serif;font-size:11px;color:var(--ink-3);letter-spacing:.14em;text-transform:uppercase}
+  .device{background:var(--green-3);border-radius:46px;padding:10px;box-shadow:var(--sh)}
+  .screen{background:var(--ivory);border-radius:37px;overflow:hidden;height:616px;position:relative;display:flex;flex-direction:column}
+  .notch{position:absolute;top:11px;left:50%;transform:translateX(-50%);width:96px;height:24px;background:var(--green-3);border-radius:999px;z-index:6}
+  .s-top{padding:34px 20px 16px;background:linear-gradient(165deg,var(--green-2),var(--green-3));color:#fff;position:relative}
+  .s-top::after{content:"";position:absolute;left:0;bottom:0;width:100%;height:1px;background:var(--gl)}
+  .s-top .hi{font-family:'Jost',sans-serif;font-size:11px;color:var(--dark-ink-2);letter-spacing:.16em;text-transform:uppercase}
+  .s-top .who{font-family:'Jost',sans-serif;font-size:21px;font-weight:300;margin-top:4px}
+  .s-body{padding:15px;overflow:auto;flex:1}
+  .s-body::-webkit-scrollbar{width:0}
+  .c2{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:15px;margin-bottom:11px;box-shadow:var(--sh-sm)}
+  .c2.dk{background:var(--green);color:var(--dark-ink);border:1px solid var(--gl)}
+  .rent-amt{font-family:'Jost',sans-serif;font-size:40px;font-weight:200;letter-spacing:-.02em;line-height:1}
+  .sub{font-size:12px;color:var(--ink-2);margin-top:3px}
+  .paybtn{display:flex;align-items:center;justify-content:center;gap:8px;background:var(--gold);color:var(--green-3);font-family:'Jost',sans-serif;font-weight:500;padding:13px;border-radius:11px;margin-top:14px;font-size:14.5px}
+  .pill{display:inline-flex;align-items:center;gap:5px;font-family:'Jost',sans-serif;font-size:10.5px;font-weight:500;padding:5px 11px;border-radius:999px;letter-spacing:.08em;text-transform:uppercase}
+  .pill.ok{background:var(--paid-soft);color:var(--paid)} .pill.auto{background:var(--info-soft);color:var(--info)}
+  .pill.due{background:var(--due-soft);color:var(--due)} .pill.late{background:var(--late-soft);color:var(--late)}
+  .rowl{display:flex;align-items:center;gap:11px;font-size:13px;padding:10px 0;border-top:1px solid var(--line);font-weight:600}
+  .rowl:first-child{border-top:none}
+  .rowl .ico{width:32px;height:32px;border-radius:9px;background:var(--gold-soft);color:var(--gold-deep);display:grid;place-items:center;font-size:16px}
+  .toggle{width:42px;height:24px;border-radius:999px;background:var(--paid);position:relative;flex:0 0 auto}
+  .toggle::after{content:"";position:absolute;top:3px;right:3px;width:18px;height:18px;border-radius:50%;background:#fff}
+  .item{display:flex;gap:12px;align-items:flex-start;padding:12px 0;border-top:1px solid var(--line)}
+  .item:first-child{border-top:none}
+  .item .th{width:42px;height:42px;border-radius:12px;flex:0 0 auto;display:grid;place-items:center;font-size:19px}
+  .item h5{font-size:13px;font-weight:700} .item p{font-size:11.5px;color:var(--ink-2);margin-top:2px}
+  .req{display:flex;align-items:center;justify-content:center;gap:8px;border:1px dashed var(--gold);color:var(--gold-deep);font-family:'Jost',sans-serif;font-weight:500;padding:12px;border-radius:11px;font-size:13px}
+  .req .ic{font-size:16px}
+  .msg{display:flex;gap:10px;padding:11px 0;border-top:1px solid var(--line)} .msg:first-child{border-top:none}
+  .av{width:34px;height:34px;border-radius:10px;flex:0 0 auto;display:grid;place-items:center;font-size:11px;color:#fff;font-weight:600;font-family:'Jost',sans-serif}
+  .msg h5{font-size:12.5px;font-weight:700} .msg p{font-size:12px;color:var(--ink-2);margin-top:2px}
+  .msg .t{font-size:10px;color:var(--ink-3);font-family:'IBM Plex Mono',monospace}
+  .rate{display:inline-flex;gap:1px;color:var(--gold-deep)} .rate .ic{font-size:12px;fill:var(--gold);stroke:var(--gold)}
+
+  /* dashboard w/ module rail */
+  .dash{padding:64px 0 96px}
+  .dh{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:16px;margin-bottom:26px}
+  .dh h2{font-family:'Jost',sans-serif;font-weight:300;font-size:40px;letter-spacing:-.02em}
+  .dh p{color:var(--ink-2);font-size:15px;margin-top:5px}
+  .live{display:flex;align-items:center;gap:8px;font-family:'Jost',sans-serif;font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2)}
+  .live .dot{width:8px;height:8px;border-radius:50%;background:var(--paid);box-shadow:0 0 0 4px rgba(63,125,95,.16)}
+  .console{display:grid;grid-template-columns:230px 1fr;gap:22px;align-items:start}
+  .rail{background:var(--green);border-radius:20px;padding:16px;position:sticky;top:98px}
+  .rail .grp{font-family:'Jost',sans-serif;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--dark-ink-2);padding:14px 12px 8px}
+  .rail a{display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:10px;color:var(--dark-ink);font-size:13.5px;font-weight:500;text-decoration:none;transition:.2s}
+  .rail a .ic{font-size:17px;color:var(--dark-ink-2)}
+  .rail a:hover{background:var(--green-2)}
+  .rail a.on{background:var(--gold);color:var(--green-3)} .rail a.on .ic{color:var(--green-3)}
+  .rail a .bdg{margin-left:auto;font-family:'IBM Plex Mono',monospace;font-size:10px;background:rgba(255,255,255,.1);padding:2px 7px;border-radius:999px}
+  .rail a.on .bdg{background:rgba(14,34,29,.2)}
+  .main{display:flex;flex-direction:column;gap:20px;min-width:0}
+  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+  .kpi{background:var(--card);border:1px solid var(--line);border-radius:15px;padding:20px;box-shadow:var(--sh-sm)}
+  .kpi .l{font-family:'Jost',sans-serif;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-2)}
+  .kpi .n{font-family:'Jost',sans-serif;font-size:33px;font-weight:200;margin-top:9px;letter-spacing:-.01em}
+  .kpi .d{font-size:12px;font-weight:600;margin-top:5px;display:flex;align-items:center;gap:5px;color:var(--paid)}
+  .kpi .d.b{color:var(--info)} .kpi .d .ic{font-size:13px}
+  .barm{height:5px;border-radius:5px;background:#EEEBDE;margin-top:13px;overflow:hidden}
+  .barm i{display:block;height:100%;border-radius:5px;background:var(--gold)}
+  .aistrip{background:var(--green);color:var(--dark-ink);border-radius:16px;padding:22px 26px;display:flex;align-items:center;gap:18px;flex-wrap:wrap;position:relative;overflow:hidden}
+  .aistrip::after{content:"";position:absolute;left:-50px;top:-50px;width:200px;height:200px;background:radial-gradient(circle,rgba(196,169,98,.2),transparent 66%)}
+  .aistrip .av-o{width:48px;height:48px;border-radius:50%;border:1px solid var(--gold);display:grid;place-items:center;position:relative;z-index:1}
+  .aistrip .av-o .ic{font-size:22px;color:var(--gold-2)}
+  .aistrip .tx{flex:1;min-width:230px;position:relative;z-index:1}
+  .aistrip .tx b{font-family:'Jost',sans-serif;font-weight:400;font-size:14.5px;color:#fff}
+  .aistrip .tx p{font-size:12.5px;color:var(--dark-ink-2);margin-top:3px}
+  .aistrip .tx p em{color:var(--gold-2);font-style:normal;font-weight:600}
+  .aistrip .tg{font-family:'Jost',sans-serif;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold-2);border:1px solid var(--gl);padding:7px 13px;border-radius:999px;position:relative;z-index:1}
+  .row2{display:grid;grid-template-columns:1.4fr 1fr;gap:20px}
+  .panel{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px;box-shadow:var(--sh-sm)}
+  .panel h3{font-family:'Jost',sans-serif;font-weight:400;font-size:18px;display:flex;align-items:center;justify-content:space-between}
+  .panel h3 .mono{font-family:'Jost',sans-serif;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)}
+  table{width:100%;border-collapse:collapse;margin-top:14px;font-size:13.5px}
+  th{text-align:left;font-family:'Jost',sans-serif;font-size:10.5px;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-3);font-weight:500;padding:8px 6px}
+  td{padding:11px 6px;border-top:1px solid var(--line);font-weight:600} td .u{color:var(--ink-2);font-weight:500;font-size:12px}
+  .amt{font-family:'IBM Plex Mono',monospace;text-align:right;font-weight:500;font-size:12.5px} th.r,td.r{text-align:right}
+  .board{display:grid;grid-template-columns:repeat(3,1fr);gap:11px;margin-top:14px}
+  .col h4{font-family:'Jost',sans-serif;font-size:10.5px;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-2);font-weight:500;margin-bottom:10px;display:flex;justify-content:space-between}
+  .tk{background:var(--ivory);border:1px solid var(--line);border-radius:11px;padding:11px;margin-bottom:9px}
+  .tk .tp{display:flex;justify-content:space-between;align-items:center}
+  .tk .u{font-family:'IBM Plex Mono',monospace;font-size:10.5px;font-weight:500;color:var(--ink-2)}
+  .tk h5{font-size:12px;font-weight:700;margin:5px 0 9px}
+  .tk .who{display:flex;align-items:center;gap:7px;font-size:11px;color:var(--ink-2);font-weight:600}
+  .who .av{width:22px;height:22px;border-radius:7px;font-size:9px}
+  .prio{width:7px;height:7px;border-radius:50%;display:inline-block}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+  .pipe{display:flex;flex-direction:column;gap:9px;margin-top:14px}
+  .pl{display:flex;align-items:center;gap:12px;padding:10px 12px;background:var(--ivory);border:1px solid var(--line);border-radius:11px}
+  .pl .ico{width:30px;height:30px;border-radius:8px;background:var(--gold-soft);color:var(--gold-deep);display:grid;place-items:center;font-size:15px}
+  .pl .m{flex:1} .pl h5{font-size:12.5px;font-weight:700} .pl p{font-size:11px;color:var(--ink-2)}
+  .pl .n{font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:500}
+  .broadcast{background:var(--green);color:var(--dark-ink);border-radius:18px;padding:26px 28px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;position:relative;overflow:hidden}
+  .broadcast::after{content:"";position:absolute;right:-60px;bottom:-70px;width:240px;height:240px;background:radial-gradient(circle,rgba(196,169,98,.16),transparent 65%)}
+  .broadcast .h{font-family:'Jost',sans-serif;font-weight:300;font-size:22px;position:relative;z-index:1}
+  .broadcast .s{font-size:13px;color:var(--dark-ink-2);margin-top:4px;position:relative;z-index:1}
+
+  .foot{padding:44px 0 60px;text-align:center;color:var(--ink-3);font-family:'Jost',sans-serif;font-size:12px;letter-spacing:.06em;border-top:1px solid var(--line)}
+  @media(max-width:980px){.cards3,.capgrid,.kpis{grid-template-columns:1fr 1fr}.console{grid-template-columns:1fr}.rail{position:static;display:flex;flex-wrap:wrap;gap:6px}.rail .grp{display:none}.rail a{flex:0 0 auto}.rail a .bdg{display:none}.row2,.two{grid-template-columns:1fr}}
+  @media(max-width:560px){.cards3,.capgrid,.kpis{grid-template-columns:1fr}.board{grid-template-columns:1fr}.tabs button{padding:9px 13px}}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-card" viewBox="0 0 24 24"><rect x="2.5" y="5" width="19" height="14" rx="2.5"/><path d="M2.5 9.5h19M6 15h4"/></symbol>
+  <symbol id="i-bank" viewBox="0 0 24 24"><path d="M3.5 9.5 12 4l8.5 5.5M5 11v7M9.5 11v7M14.5 11v7M19 11v7M3.5 20.5h17"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6.5 9.5 17 4 11.5"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h15M13 6l6 6-6 6"/></symbol>
+  <symbol id="i-up" viewBox="0 0 24 24"><path d="M6 15l6-6 6 6"/></symbol>
+  <symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 3c.6 4.6 2 6 6.5 6.5C14 10 12.6 11.4 12 16c-.6-4.6-2-6-6.5-6.5C10 9 11.4 7.6 12 3z"/><path d="M18.5 14.5c.3 1.8.8 2.3 2.5 2.6-1.7.3-2.2.8-2.5 2.6-.3-1.8-.8-2.3-2.5-2.6 1.7-.3 2.2-.8 2.5-2.6z"/></symbol>
+  <symbol id="i-star" viewBox="0 0 24 24"><path d="M12 3.5l2.6 5.3 5.8.9-4.2 4.1 1 5.7-5.2-2.7-5.2 2.7 1-5.7-4.2-4.1 5.8-.9z"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M6.5 6.5l11 11M17.5 6.5l-11 11"/></symbol>
+  <symbol id="i-wind" viewBox="0 0 24 24"><path d="M3 9h10a2.5 2.5 0 1 0-2.5-2.5M3 13h14a2.5 2.5 0 1 1-2.5 2.5M3 17h7a2 2 0 1 1-2 2"/></symbol>
+  <symbol id="i-drop" viewBox="0 0 24 24"><path d="M12 3.5s6 6.3 6 10.3a6 6 0 0 1-12 0c0-4 6-10.3 6-10.3z"/></symbol>
+  <symbol id="i-bulb" viewBox="0 0 24 24"><path d="M9.2 17.5h5.6M10 20.5h4M12 3.5A6 6 0 0 0 8 14c.9 1 1.3 1.8 1.5 2.5h5c.2-.7.6-1.5 1.5-2.5A6 6 0 0 0 12 3.5z"/></symbol>
+  <symbol id="i-wrench" viewBox="0 0 24 24"><path d="M16.3 3.7a4 4 0 0 0-5.2 5.2l-7 7a1.6 1.6 0 1 0 2.3 2.3l7-7a4 4 0 0 0 5.2-5.2l-2.6 2.6-2.3-2.3z"/></symbol>
+  <symbol id="i-chat" viewBox="0 0 24 24"><path d="M21 5.5v8A1.5 1.5 0 0 1 19.5 15H10l-4.5 4v-4H4.5A1.5 1.5 0 0 1 3 13.5v-8A1.5 1.5 0 0 1 4.5 4h15A1.5 1.5 0 0 1 21 5.5z"/></symbol>
+  <symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 16c1-1.2 1.5-3.2 1.5-6a4.5 4.5 0 0 1 9 0c0 2.8.5 4.8 1.5 6zM4 16.5h16M10.3 20a1.8 1.8 0 0 0 3.4 0"/></symbol>
+  <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="2.5"/><path d="M3.5 9.5h17M8 3.5v4M16 3.5v4"/></symbol>
+  <symbol id="i-box" viewBox="0 0 24 24"><path d="M3.5 7.5 12 3l8.5 4.5v9L12 21l-8.5-4.5zM3.5 7.5 12 12l8.5-4.5M12 12v9"/></symbol>
+  <symbol id="i-shirt" viewBox="0 0 24 24"><path d="M8.5 4 5 6.5l1.6 2.8 1.9-1v8.7h7V8.3l1.9 1L20 6.5 16.5 4a3.2 3.2 0 0 1-8 0z"/></symbol>
+  <symbol id="i-paw" viewBox="0 0 24 24"><circle cx="7" cy="9.5" r="1.5"/><circle cx="12" cy="7.5" r="1.6"/><circle cx="17" cy="9.5" r="1.5"/><path d="M12 12.5c-2.4 0-4.3 1.9-4.3 3.8A2.3 2.3 0 0 0 10 18.5c1.1 0 1.1-.5 2-.5s.9.5 2 .5a2.3 2.3 0 0 0 2.3-2.2c0-1.9-1.9-3.8-4.3-3.8z"/></symbol>
+  <symbol id="i-dumbbell" viewBox="0 0 24 24"><path d="M3 9v6M6 7v10M18 7v10M21 9v6M6 12h12"/></symbol>
+  <symbol id="i-bed" viewBox="0 0 24 24"><path d="M3 18v-6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v6M3 15.5h18M3 18v2.5M21 18v2.5M7 10V8.5A1.5 1.5 0 0 1 8.5 7h7A1.5 1.5 0 0 1 17 8.5V10"/></symbol>
+  <symbol id="i-doc" viewBox="0 0 24 24"><path d="M6 3h8l4 4v14H6zM14 3v4h4M9 12.5h6M9 16h4"/></symbol>
+  <symbol id="i-usercheck" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M3.5 20a5.5 5.5 0 0 1 11 0M16 12l2 2 4-4"/></symbol>
+  <symbol id="i-clipboard" viewBox="0 0 24 24"><path d="M9 4h6v3H9zM9 5.5H6.5A1.5 1.5 0 0 0 5 7v13h14V7a1.5 1.5 0 0 0-1.5-1.5H15M9 13l2 2 4-4"/></symbol>
+  <symbol id="i-chart" viewBox="0 0 24 24"><path d="M4 4v16h16M8 16v-4M12 16V9M16 16v-6"/></symbol>
+  <symbol id="i-pie" viewBox="0 0 24 24"><path d="M12 12V3.5A8.5 8.5 0 1 0 20.5 12z"/><path d="M12 3.5A8.5 8.5 0 0 1 20.5 12H12z"/></symbol>
+  <symbol id="i-key" viewBox="0 0 24 24"><circle cx="9" cy="10" r="4.5"/><path d="M12.2 12.8 20 20.5M17 18l2-2M14.2 15.2l2 2"/></symbol>
+  <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M4 12a8 8 0 0 1 13.5-5.8L20 8.5M20 4v4.5h-4.5M20 12a8 8 0 0 1-13.5 5.8L4 15.5M4 20v-4.5h4.5"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><circle cx="8.5" cy="8.5" r="3"/><path d="M3 19a5.5 5.5 0 0 1 11 0M16 6a3 3 0 0 1 0 6M15.5 13.8a5.5 5.5 0 0 1 5.5 5.2"/></symbol>
+  <symbol id="i-grid" viewBox="0 0 24 24"><rect x="4" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.5"/></symbol>
+  <symbol id="i-mega" viewBox="0 0 24 24"><path d="M4 10.5v3A1.5 1.5 0 0 0 5.5 15H7l1.3 4.4 2.2-.5L9.5 15 19 18.5V5.5L9.5 9H5.5A1.5 1.5 0 0 0 4 10.5zM19 9.5a3 3 0 0 1 0 5"/></symbol>
+  <symbol id="i-cart" viewBox="0 0 24 24"><path d="M3.5 5h2.2l1.6 9.3A1.8 1.8 0 0 0 9 15.8h7.6a1.8 1.8 0 0 0 1.8-1.4L20 8H7"/><circle cx="9.5" cy="19" r="1.2"/><circle cx="16.5" cy="19" r="1.2"/></symbol>
+  <symbol id="i-toolbox" viewBox="0 0 24 24"><path d="M4 9.5h16V19H4zM4 9.5V7.5A1.5 1.5 0 0 1 5.5 6h13A1.5 1.5 0 0 1 20 7.5v2M9 6V4.5h6V6M4 13h16"/></symbol>
+  <symbol id="i-gauge" viewBox="0 0 24 24"><path d="M20.5 14A9 9 0 1 0 3.5 14M12 13l4-3M4.5 12H6M18 12h1.5M12 5.5V7"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 4 2.5 20h19zM12 10v4.5M12 17.5h.01"/></symbol>
+  <symbol id="i-home" viewBox="0 0 24 24"><path d="M4 11 12 4l8 7M6 9.5V20h12V9.5M10 20v-5h4v5"/></symbol>
+  <symbol id="i-heart" viewBox="0 0 24 24"><path d="M12 20S4 14.5 4 9.4A4.2 4.2 0 0 1 12 7a4.2 4.2 0 0 1 8 2.4C20 14.5 12 20 12 20z"/></symbol>
+  <symbol id="i-building" viewBox="0 0 24 24"><path d="M4 20.5V5.5A1.5 1.5 0 0 1 5.5 4h7A1.5 1.5 0 0 1 14 5.5v15M14 9h4.5A1.5 1.5 0 0 1 20 10.5v10M3 20.5h18M7.5 8h3M7.5 12h3M7.5 16h3"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5v5l3.2 1.9"/></symbol>
+  <symbol id="i-camera" viewBox="0 0 24 24"><path d="M4 8.5h2.8L8.2 6.5h7.6l1.4 2H20a1.5 1.5 0 0 1 1.5 1.5v8A1.5 1.5 0 0 1 20 19.5H4A1.5 1.5 0 0 1 2.5 18v-8A1.5 1.5 0 0 1 4 8.5z"/><circle cx="12" cy="13" r="3.4"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11z"/><circle cx="12" cy="10" r="2.6"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3.5 19 6v5c0 4.5-3 7.6-7 9.5-4-1.9-7-5-7-9.5V6z"/><path d="M9 12l2 2 4-4"/></symbol>
+</svg>
+
+<header class="bar">
+  <div class="wrap bar-in">
+    <div style="display:flex;align-items:center;gap:13px">
+      <span class="logo"><svg viewBox="0 0 44 44"><circle cx="22" cy="22" r="20.4" fill="none" stroke="var(--gold)" stroke-width="1.1"/><circle cx="17.6" cy="22" r="10" fill="var(--ivory)"/><path d="M17.6 12a10 10 0 0 1 0 20z" fill="var(--gold)"/></svg></span>
+      <span class="wordmark"><span class="t">the</span><span class="o">Oliver</span></span>
+    </div>
+    <div class="tabs">
+      <button class="on" data-v="overview">Overview</button>
+      <button data-v="residents">For Residents</button>
+      <button data-v="team">For the Office</button>
+      <button data-v="field">For the Field</button>
+    </div>
+  </div>
+</header>
+
+<!-- OVERVIEW -->
+<section class="view on" id="overview">
+  <div class="hero">
+    <div class="wrap hero-in">
+      <span class="eyebrow">The Oliver · 312 Residences · assisted &amp; operated for you</span>
+      <h1>Rent, repairs &amp; residents — <em>one refined hub.</em></h1>
+      <p class="lede">Paper checks, missed maintenance, and phone tag end here. The Oliver is a full property platform run for you — with an assistant named Oliver handling the busywork, so a resident pays rent in ten seconds and a leak becomes a dispatched work order the instant it's reported. Custom-built around your property's needs — not off-the-shelf software you bend to fit.</p>
+      <div class="cta">
+        <a class="btn gold" data-jump="residents" href="#">See the resident app <svg class="ic"><use href="#i-arrow"/></svg></a>
+        <a class="btn line" data-jump="team" href="#">See the operations console</a>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="n">10 sec</div><div class="l">to pay rent from a phone</div></div>
+        <div class="metric"><div class="n">Zero</div><div class="l">paper checks to chase</div></div>
+        <div class="metric"><div class="n">One</div><div class="l">flat fee — no per-unit tax</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap band">
+    <hr class="hr-gold" />
+    <div class="band-head"><span class="eyebrow">Built for you</span>
+      <h2 class="disp">Custom-built around your property. Your needs, solved.</h2>
+      <p>Not off-the-shelf software you bend to fit — The Oliver is shaped to how your property actually runs, then operated for you.</p></div>
+    <div class="cards3">
+      <div class="fcard"><div class="ico"><svg class="ic"><use href="#i-card"/></svg></div>
+        <h3 class="disp">Money, on time</h3><p>Rent by card, bank, or Apple Pay with autopay — every dollar visible the moment it lands. No paper checks, no chasing.</p></div>
+      <div class="fcard"><div class="ico"><svg class="ic"><use href="#i-wrench"/></svg></div>
+        <h3 class="disp">Nothing slips through</h3><p>Every request becomes an auto-dispatched work order — photo, assigned tech, and a live status the resident can watch, start to finish.</p></div>
+      <div class="fcard"><div class="ico"><svg class="ic"><use href="#i-chat"/></svg></div>
+        <h3 class="disp">Everyone in the loop</h3><p>Announce a shut-off or rent reminder to all 312 residences at once — and let residents reply in a single thread.</p></div>
+    </div>
+  </div>
+
+  <div class="wrap band" style="padding-top:0">
+    <hr class="hr-gold" />
+    <div class="band-head"><span class="eyebrow">How it works</span>
+      <h2 class="disp">Three phases. You only climb when it's working.</h2>
+      <p>Live in about two weeks. Start with the essentials, grow into the whole platform — and, when you're ready, let us run it.</p></div>
+    <div class="ladder">
+      <div class="rung">
+        <div class="num">01</div>
+        <div class="step">Go live · ~2 weeks</div>
+        <h4 class="disp">The bleeding, stopped</h4>
+        <p>Online rent &amp; autopay, maintenance dispatch, inspections &amp; turns, resident messaging, and your tenant + accounting records — all 200 doors.</p>
+      </div>
+      <div class="rung">
+        <div class="num">02</div>
+        <div class="step">Full platform</div>
+        <h4 class="disp">The whole Oliver</h4>
+        <p>Every function — leasing, screening, inspections, owner reporting, concierge, access — on one synced record.</p>
+      </div>
+      <div class="rung dest">
+        <div class="num">03</div>
+        <div class="step">Fully managed</div>
+        <h4 class="disp">We run it — and your portfolio</h4>
+        <p>The Oliver plus our team operate the property end to end, then replicate across your other properties.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap band" style="padding-top:0">
+    <hr class="hr-gold" />
+    <div class="band-head"><span class="eyebrow">The cost of growing</span>
+      <h2 class="disp">Per-unit software punishes growth. <em style="font-style:normal;color:var(--gold-deep)">The Oliver doesn't.</em></h2>
+      <p>Drag your portfolio size. Watch per-unit pricing climb — while The Oliver stays flat.</p></div>
+    <div class="calc">
+      <div class="calc-top">
+        <div class="calc-units"><span id="cu">400</span> units</div>
+        <input type="range" id="unitSlider" min="300" max="2000" value="400" step="10" />
+        <div class="calc-scale"><span>300 doors</span><span>2,000 doors</span></div>
+      </div>
+      <div class="crow">
+        <div class="cl">Per-unit software<span class="tiny">~$5 / unit / month</span></div>
+        <div class="cbar-wrap"><div class="cbar comp" id="compBar"></div></div>
+        <div class="cval" id="compVal">$2,000</div>
+      </div>
+      <div class="crow us">
+        <div class="cl">The Oliver<span class="tiny">flat — every month</span></div>
+        <div class="cbar-wrap"><div class="cbar olv" id="olvBar"></div></div>
+        <div class="cval" id="olvVal">$1,450</div>
+      </div>
+      <div class="calc-note" id="saveNote"></div>
+    </div>
+    <div class="disclaimer">Illustrative — the shape of the model, not a quote. Your actual pricing set together.</div>
+  </div>
+
+  <div class="wrap" style="padding-bottom:20px">
+    <div class="cap">
+      <div class="head"><span class="eyebrow" style="color:var(--gold-2)">One platform · every function</span>
+        <h2 class="disp">The back office of the enterprise systems. The polish of a concierge. <em>Without the stack, or the per-door bill.</em></h2>
+        <p><span style="opacity:.42;font-weight:400">AppFolio runs the back office. Hello Alfred runs the experience.</span> <b style="color:#fff;font-weight:700">The Oliver runs both</b> — end to end, automated, operated for you.</p></div>
+      <div class="capcols">
+        <div class="capcol">
+          <h5>Money &amp; accounting</h5>
+          <div class="ci"><svg class="ic"><use href="#i-card"/></svg> <span>Payments &amp; autopay<sup style="color:var(--gold-2);font-weight:700">&#42;</sup></span></div>
+          <div class="ci"><svg class="ic"><use href="#i-bank"/></svg> <span>Accounting &amp; ledgers<sup style="color:var(--gold-2);font-weight:700">&#42;</sup></span></div>
+          <div class="ci"><svg class="ic"><use href="#i-gauge"/></svg> Utilities / RUBS billing</div>
+          <div class="ci"><svg class="ic"><use href="#i-card"/></svg> Collections &amp; delinquency</div>
+          <div class="ci"><svg class="ic"><use href="#i-chart"/></svg> Budgeting &amp; forecasting</div>
+          <div class="ci"><svg class="ic"><use href="#i-shield"/></svg> Renters insurance</div>
+        </div>
+        <div class="capcol">
+          <h5>Leasing &amp; growth</h5>
+          <div class="ci"><svg class="ic"><use href="#i-mega"/></svg> Listings &amp; ILS syndication</div>
+          <div class="ci"><svg class="ic"><use href="#i-usercheck"/></svg> Lead CRM &amp; follow-up</div>
+          <div class="ci"><svg class="ic"><use href="#i-doc"/></svg> Applications &amp; e-sign</div>
+          <div class="ci"><svg class="ic"><use href="#i-usercheck"/></svg> Screening</div>
+          <div class="ci"><svg class="ic"><use href="#i-refresh"/></svg> Renewals</div>
+          <div class="ci"><svg class="ic"><use href="#i-star"/></svg> Reviews &amp; reputation</div>
+          <div class="ci"><svg class="ic"><use href="#i-users"/></svg> Resident referrals</div>
+        </div>
+        <div class="capcol">
+          <h5>Operations</h5>
+          <div class="ci"><svg class="ic"><use href="#i-wrench"/></svg> <span>Assisted maintenance<sup style="color:var(--gold-2);font-weight:700">&#42;</sup></span></div>
+          <div class="ci"><svg class="ic"><use href="#i-clipboard"/></svg> <span>Inspections &amp; turns<sup style="color:var(--gold-2);font-weight:700">&#42;</sup></span></div>
+          <div class="ci"><svg class="ic"><use href="#i-toolbox"/></svg> Vendors &amp; COIs</div>
+          <div class="ci"><svg class="ic"><use href="#i-cart"/></svg> Supply management</div>
+          <div class="ci"><svg class="ic"><use href="#i-calendar"/></svg> Calendar &amp; scheduling</div>
+          <div class="ci"><svg class="ic"><use href="#i-alert"/></svg> Violations &amp; enforcement</div>
+          <div class="ci"><svg class="ic"><use href="#i-home"/></svg> Smart-home / IoT</div>
+        </div>
+        <div class="capcol">
+          <h5>Residents &amp; insight</h5>
+          <div class="ci"><svg class="ic"><use href="#i-chat"/></svg> <span>Communications inbox<sup style="color:var(--gold-2);font-weight:700">&#42;</sup></span></div>
+          <div class="ci"><svg class="ic"><use href="#i-users"/></svg> <span>Resident &amp; unit records<sup style="color:var(--gold-2);font-weight:700">&#42;</sup></span></div>
+          <div class="ci"><svg class="ic"><use href="#i-bell"/></svg> Concierge · Oliver</div>
+          <div class="ci"><svg class="ic"><use href="#i-dumbbell"/></svg> Amenities &amp; packages</div>
+          <div class="ci"><svg class="ic"><use href="#i-key"/></svg> Access &amp; parking</div>
+          <div class="ci"><svg class="ic"><use href="#i-heart"/></svg> Surveys / NPS</div>
+          <div class="ci"><svg class="ic"><use href="#i-pie"/></svg> Owner reporting &amp; portal</div>
+          <div class="ci"><svg class="ic"><use href="#i-chart"/></svg> Analytics</div>
+        </div>
+      </div>
+      <div style="margin-top:24px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--gold-2);letter-spacing:.04em;position:relative;z-index:1">&#42; included in Phase 1 &middot; go-live</div>
+    </div>
+
+    <div class="sync">
+      <hr class="hr-gold" />
+      <div class="band-head"><span class="eyebrow">One synced system</span>
+        <h2 class="disp">Lease to renewal, one continuous record. <em style="font-style:normal;color:var(--gold-deep)">Nothing lives in a silo.</em></h2>
+        <p>Every email, payment, work order, inspection, and document attaches to the unit — and to the resident. As a prospect becomes a lease becomes a renewal, the whole history follows. No re-keying between systems, no data marooned in someone's inbox, because there is only one system. Staff and residents both live in that one interface — and even the outside services (payments, screening, insurance, smart access) happen inside it, never a separate portal.</p></div>
+      <div class="lifecycle">
+        <div class="stage"><div class="dot"><svg class="ic"><use href="#i-usercheck"/></svg></div><h4>Lead</h4><p>Inquiry, tour, and every message captured from day one.</p></div>
+        <div class="stage"><div class="dot"><svg class="ic"><use href="#i-doc"/></svg></div><h4>Lease</h4><p>Application, screening, e-sign, deposit — all on the unit.</p></div>
+        <div class="stage"><div class="dot"><svg class="ic"><use href="#i-home"/></svg></div><h4>Live</h4><p>Rent, maintenance, packages, messages — one running timeline.</p></div>
+        <div class="stage"><div class="dot"><svg class="ic"><use href="#i-refresh"/></svg></div><h4>Renew</h4><p>Oliver offers renewal with the full history behind it.</p></div>
+      </div>
+    </div>
+
+    <div class="proof">
+      <div class="lead"><span class="eyebrow">Not a slide — a working system</span>
+        <h2 class="disp">This already runs a real property operation every day. We stand up your version and <em>run it for you.</em></h2></div>
+      <div class="stk">
+        <div class="pstat"><div class="n">27</div><div class="l">functions on one synced record</div></div>
+        <div class="pstat"><div class="n">1 fee</div><div class="l">flat monthly — scales without per-unit cost</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RESIDENTS -->
+<section class="view" id="residents">
+  <div class="wrap sec-intro">
+    <hr class="hr-gold" />
+    <span class="eyebrow">For Residents</span>
+    <h1 class="disp">Everything a resident needs — on the phone they already carry.</h1>
+  </div>
+  <div class="wrap phones">
+    <div class="phone">
+      <div class="plabel"><b>Pay rent</b><span>card · bank · apple pay</span></div>
+      <div class="device"><div class="screen"><div class="notch"></div>
+        <div class="s-top"><div class="hi">Good morning</div><div class="who">Res. 214 · Maria</div></div>
+        <div class="s-body">
+          <div class="c2"><div style="display:flex;justify-content:space-between;align-items:center"><span class="sub">June rent</span><span class="pill due">Due Jun 1</span></div>
+            <div class="rent-amt" style="margin-top:6px">$1,565</div><div class="sub">Balance due · $0 late fees</div>
+            <div class="paybtn">Pay now <svg class="ic"><use href="#i-arrow"/></svg></div>
+            <div class="rowl"><div class="ico"><svg class="ic"><use href="#i-card"/></svg></div><div style="flex:1">Visa ···· 4821</div><span class="pill ok">Default</span></div>
+            <div class="rowl"><div class="ico"><svg class="ic"><use href="#i-bank"/></svg></div><div style="flex:1">Bank transfer · no fee</div></div></div>
+          <div class="c2"><div style="display:flex;justify-content:space-between;align-items:center"><div><div style="font-weight:700;font-size:14px">Autopay</div><div class="sub">1st of each month</div></div><div class="toggle"></div></div></div>
+          <div class="c2" style="margin-bottom:0"><div style="font-weight:700;font-size:12.5px;margin-bottom:2px">Recent</div>
+            <div class="rowl"><div class="ico"><svg class="ic"><use href="#i-check"/></svg></div><div style="flex:1">May rent</div><span class="amt">$1,565</span></div>
+            <div class="rowl"><div class="ico"><svg class="ic"><use href="#i-check"/></svg></div><div style="flex:1">April rent</div><span class="amt">$1,565</span></div></div>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="phone">
+      <div class="plabel"><b>Report a repair</b><span>photo · tracked · updated</span></div>
+      <div class="device"><div class="screen"><div class="notch"></div>
+        <div class="s-top"><div class="hi">Maintenance</div><div class="who">Your requests</div></div>
+        <div class="s-body">
+          <div class="req"><svg class="ic"><use href="#i-plus"/></svg> New request · add a photo</div>
+          <div class="c2" style="margin-top:11px">
+            <div class="item"><div class="th" style="background:var(--gold-soft);color:var(--gold-deep)"><svg class="ic"><use href="#i-wind"/></svg></div><div style="flex:1"><h5>AC not cooling</h5><p>Reported Mon · <b style="color:var(--gold-deep)">Oliver routed to Luis</b></p><span class="pill due" style="margin-top:6px">In progress</span></div></div>
+            <div class="item"><div class="th" style="background:var(--info-soft);color:var(--info)"><svg class="ic"><use href="#i-drop"/></svg></div><div style="flex:1"><h5>Kitchen faucet drip</h5><p>Scheduled Thu 9–11am</p><span class="pill auto" style="margin-top:6px">Scheduled</span></div></div>
+            <div class="item"><div class="th" style="background:var(--paid-soft);color:var(--paid)"><svg class="ic"><use href="#i-bulb"/></svg></div><div style="flex:1"><h5>Bedroom light out</h5><p>Fixed Fri · rated <span class="rate"><svg class="ic"><use href="#i-star"/></svg><svg class="ic"><use href="#i-star"/></svg><svg class="ic"><use href="#i-star"/></svg><svg class="ic"><use href="#i-star"/></svg><svg class="ic"><use href="#i-star"/></svg></span></p><span class="pill ok" style="margin-top:6px">Done</span></div></div>
+          </div>
+          <div class="c2 dk" style="margin-bottom:0"><div style="font-weight:700;font-size:12.5px;color:#fff">You always know what's happening</div><div style="font-size:11.5px;color:var(--dark-ink-2);margin-top:4px">Every request shows who's on it and when — no calling the office.</div></div>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="phone">
+      <div class="plabel"><b>Messages &amp; notices</b><span>building-wide · two-way</span></div>
+      <div class="device"><div class="screen"><div class="notch"></div>
+        <div class="s-top"><div class="hi">The Oliver</div><div class="who">Community</div></div>
+        <div class="s-body">
+          <div class="c2">
+            <div class="msg"><div class="av" style="background:var(--green)">O</div><div style="flex:1"><h5>Pool reopens Friday <span class="t">· 2h</span></h5><p>Resurfacing done. Gates open Fri 8am.</p></div></div>
+            <div class="msg"><div class="av" style="background:var(--gold-deep)">O</div><div style="flex:1"><h5>Water shut-off Tue 1–3pm <span class="t">· 1d</span></h5><p>Building C only. A &amp; B unaffected.</p></div></div>
+            <div class="msg"><div class="av" style="background:var(--info)">O</div><div style="flex:1"><h5>Rent due June 1 <span class="t">· 3d</span></h5><p>Pay in the app or switch on autopay.</p></div></div>
+          </div>
+          <div class="c2" style="margin-bottom:0"><div style="font-weight:700;font-size:12.5px;margin-bottom:6px">Message the office</div>
+            <div class="msg"><div class="av" style="background:#E9E4D6;color:var(--ink)">M</div><div style="flex:1"><p style="margin:0">"Package room code isn't working"</p><span class="t">Maria · you</span></div></div>
+            <div class="msg"><div class="av" style="background:var(--green)">O</div><div style="flex:1"><p style="margin:0">"Fixed — new code texted to you."</p><span class="t">Oliver · 4 min</span></div></div></div>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="phone">
+      <div class="plabel"><b>Concierge &amp; amenities</b><span>the alfred layer, included</span></div>
+      <div class="device"><div class="screen"><div class="notch"></div>
+        <div class="s-top"><div class="hi">Lifestyle</div><div class="who">Oliver, at your service</div></div>
+        <div class="s-body">
+          <div class="c2 dk"><div style="display:flex;gap:11px;align-items:center"><div style="font-size:21px;color:var(--gold-2)"><svg class="ic"><use href="#i-box"/></svg></div><div><div style="font-weight:700;font-size:13px;color:#fff">2 packages in your locker</div><div style="font-size:11.5px;color:var(--dark-ink-2)">Locker 14 · code 4417 · until Fri</div></div></div></div>
+          <div class="c2"><div style="font-weight:700;font-size:12.5px;margin-bottom:2px">Book an amenity</div>
+            <div class="rowl"><div class="ico"><svg class="ic"><use href="#i-calendar"/></svg></div><div style="flex:1">Clubhouse<div class="sub">Sat 4–7pm</div></div><span class="pill ok">Reserve</span></div>
+            <div class="rowl"><div class="ico"><svg class="ic"><use href="#i-dumbbell"/></svg></div><div style="flex:1">Gym slot<div class="sub">Open now</div></div><span class="pill auto">Book</span></div>
+            <div class="rowl"><div class="ico"><svg class="ic"><use href="#i-bed"/></svg></div><div style="flex:1">Guest suite<div class="sub">2 nights left</div></div><span class="pill due">Request</span></div></div>
+          <div class="c2" style="margin-bottom:0"><div style="font-weight:700;font-size:12.5px;margin-bottom:2px">Concierge</div>
+            <div class="req"><svg class="ic"><use href="#i-spark"/></svg> Ask Oliver · 24/7</div>
+            <div class="item" style="padding-top:12px"><div class="th" style="background:var(--info-soft);color:var(--info)"><svg class="ic"><use href="#i-shirt"/></svg></div><div style="flex:1"><h5>Dry cleaning pickup</h5><p>Tomorrow 8am · confirmed</p></div></div>
+            <div class="item"><div class="th" style="background:var(--gold-soft);color:var(--gold-deep)"><svg class="ic"><use href="#i-paw"/></svg></div><div style="flex:1"><h5>Dog walk · daily 5pm</h5><p>Booked through partner</p></div></div></div>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="phone">
+      <div class="plabel"><b>Home &amp; access</b><span>entry · lease · community</span></div>
+      <div class="device"><div class="screen"><div class="notch"></div>
+        <div class="s-top"><div class="hi">Home</div><div class="who">Residence 214</div></div>
+        <div class="s-body">
+          <div class="c2 dk"><div style="font-weight:700;font-size:12.5px;color:#fff;margin-bottom:8px">Smart entry</div>
+            <div class="paybtn" style="background:var(--gold);margin-top:0"><svg class="ic"><use href="#i-key"/></svg> Unlock lobby</div>
+            <div style="display:flex;gap:8px;margin-top:10px"><span class="pill" style="background:rgba(255,255,255,.08);color:var(--dark-ink)">Guest pass</span><span class="pill" style="background:rgba(255,255,255,.08);color:var(--dark-ink)">Vendor pass</span></div></div>
+          <div class="c2"><div style="font-weight:700;font-size:12.5px;margin-bottom:2px">Your lease</div>
+            <div class="rowl"><div class="ico"><svg class="ic"><use href="#i-doc"/></svg></div><div style="flex:1">Lease &amp; documents<div class="sub">Signed · renews Sep 30</div></div></div>
+            <div class="rowl"><div class="ico"><svg class="ic"><use href="#i-refresh"/></svg></div><div style="flex:1">Renewal offer<div class="sub">Ready to review</div></div><span class="pill due">New</span></div></div>
+          <div class="c2" style="margin-bottom:0"><div style="font-weight:700;font-size:12.5px;margin-bottom:6px">This week at The Oliver</div>
+            <div class="item" style="padding-top:0"><div class="th" style="background:var(--gold-soft);color:var(--gold-deep)"><svg class="ic"><use href="#i-calendar"/></svg></div><div style="flex:1"><h5>Rooftop social · Thu 6pm</h5><p>32 residents going</p></div></div>
+            <div class="item"><div class="th" style="background:var(--paid-soft);color:var(--paid)"><svg class="ic"><use href="#i-users"/></svg></div><div style="flex:1"><h5>Farmers market · Sat 9am</h5><p>Courtyard</p></div></div></div>
+        </div>
+      </div></div>
+    </div>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section class="view" id="team">
+  <div class="wrap dash">
+    <hr class="hr-gold" />
+    <div class="dh">
+      <div><span class="eyebrow">For Your Team</span><h2 class="disp">Operations console</h2><p>Every function across all 312 residences — money, work, leasing, and people — in one place.</p></div>
+      <div class="live"><span class="dot"></span> Live · updated just now</div>
+    </div>
+    <div class="console">
+      <nav class="rail">
+        <div class="grp">Operate</div>
+        <a class="on"><svg class="ic"><use href="#i-grid"/></svg> Dashboard</a>
+        <a><svg class="ic"><use href="#i-building"/></svg> Units <span class="bdg">312</span></a>
+        <a><svg class="ic"><use href="#i-card"/></svg> Accounting</a>
+        <a><svg class="ic"><use href="#i-wrench"/></svg> Maintenance <span class="bdg">24</span></a>
+        <a><svg class="ic"><use href="#i-clipboard"/></svg> Inspections <span class="bdg">6</span></a>
+        <a><svg class="ic"><use href="#i-calendar"/></svg> Calendar</a>
+        <div class="grp">Grow</div>
+        <a><svg class="ic"><use href="#i-doc"/></svg> Leasing <span class="bdg">9</span></a>
+        <a><svg class="ic"><use href="#i-usercheck"/></svg> Applications <span class="bdg">4</span></a>
+        <a><svg class="ic"><use href="#i-refresh"/></svg> Renewals</a>
+        <div class="grp">Engage</div>
+        <a><svg class="ic"><use href="#i-chat"/></svg> Communications <span class="bdg">12</span></a>
+        <a><svg class="ic"><use href="#i-users"/></svg> Residents</a>
+        <a><svg class="ic"><use href="#i-pie"/></svg> Owners</a>
+        <div class="grp">Supply</div>
+        <a><svg class="ic"><use href="#i-toolbox"/></svg> Vendors</a>
+        <a><svg class="ic"><use href="#i-cart"/></svg> Supplies <span class="bdg">4</span></a>
+        <a><svg class="ic"><use href="#i-key"/></svg> Access</a>
+        <a><svg class="ic"><use href="#i-chart"/></svg> Analytics</a>
+      </nav>
+
+      <div class="main">
+        <div class="kpis">
+          <div class="kpi"><div class="l">Collected · June</div><div class="n">$412,880</div><div class="d"><svg class="ic"><use href="#i-up"/></svg> 85% of $486,200</div><div class="barm"><i style="width:85%"></i></div></div>
+          <div class="kpi"><div class="l">On autopay</div><div class="n">63%</div><div class="d"><svg class="ic"><use href="#i-up"/></svg> from 0%</div><div class="barm"><i style="width:63%"></i></div></div>
+          <div class="kpi"><div class="l">Occupancy</div><div class="n">94%</div><div class="d"><svg class="ic"><use href="#i-up"/></svg> 9 leasing</div><div class="barm"><i style="width:94%"></i></div></div>
+          <div class="kpi"><div class="l">Avg response</div><div class="n">6 hrs</div><div class="d b"><svg class="ic"><use href="#i-up"/></svg> was 3–5 days</div><div class="barm"><i style="width:20%;background:var(--info)"></i></div></div>
+        </div>
+
+        <div class="aistrip">
+          <div class="av-o"><svg class="ic"><use href="#i-spark"/></svg></div>
+          <div class="tx"><b>Oliver worked overnight — before anyone clocked in</b>
+            <p>Routed <em>#418</em> to Luis (HVAC) · drafted <em>3</em> late-rent reminders · reconciled <em>214</em> payments · sent <em>2</em> renewal offers · answered <em>19</em> resident questions.</p></div>
+          <span class="tg">0 staff touches</span>
+        </div>
+
+        <div class="row2">
+          <div class="panel"><h3>Rent roll <span class="mono">June · live</span></h3>
+            <table><thead><tr><th>Residence / Resident</th><th class="r">Rent</th><th class="r">Status</th></tr></thead><tbody>
+              <tr><td>214 <span class="u">· M. Delgado</span></td><td class="amt">$1,565</td><td class="r"><span class="pill due">Due</span></td></tr>
+              <tr><td>118 <span class="u">· T. Okafor</span></td><td class="amt">$1,450</td><td class="r"><span class="pill auto">Autopay</span></td></tr>
+              <tr><td>402 <span class="u">· R. Santos</span></td><td class="amt">$1,695</td><td class="r"><span class="pill ok">Paid</span></td></tr>
+              <tr><td>1123 <span class="u">· J. Whitaker</span></td><td class="amt">$1,820</td><td class="r"><span class="pill late">14d late</span></td></tr>
+              <tr><td>309 <span class="u">· L. Nguyen</span></td><td class="amt">$1,450</td><td class="r"><span class="pill ok">Paid</span></td></tr>
+            </tbody></table>
+            <div style="margin-top:12px;font-size:12.5px;color:var(--ink-2);font-weight:600">1 resident 14d late — <b style="color:var(--gold-deep)">Oliver sent reminder + late fee.</b></div>
+          </div>
+          <div class="panel"><h3>Maintenance <span class="mono">24 open</span></h3>
+            <div class="board">
+              <div class="col"><h4>New <span>3</span></h4>
+                <div class="tk"><div class="tp"><span class="u">#207</span><span class="prio" style="background:var(--late)"></span></div><h5>Disposal jammed</h5><div class="who"><span class="av" style="background:#E9E4D6;color:var(--ink)">?</span> Routing…</div></div>
+                <div class="tk"><div class="tp"><span class="u">#815</span><span class="prio" style="background:var(--gold)"></span></div><h5>Door lock</h5><div class="who"><span class="av" style="background:#E9E4D6;color:var(--ink)">?</span> Routing…</div></div></div>
+              <div class="col"><h4>Active <span>2</span></h4>
+                <div class="tk"><div class="tp"><span class="u">#418</span><span class="prio" style="background:var(--late)"></span></div><h5>AC not cooling</h5><div class="who"><span class="av" style="background:var(--gold-deep)">L</span> Luis</div></div>
+                <div class="tk"><div class="tp"><span class="u">#1102</span><span class="prio" style="background:var(--info)"></span></div><h5>Faucet drip</h5><div class="who"><span class="av" style="background:var(--info)">M</span> Marcus</div></div></div>
+              <div class="col"><h4>Done <span>wk</span></h4>
+                <div class="tk" style="opacity:.66"><div class="tp"><span class="u">#305</span><svg class="ic" style="color:var(--paid)"><use href="#i-check"/></svg></div><h5>Light out</h5><div class="who rate"><svg class="ic"><use href="#i-star"/></svg><svg class="ic"><use href="#i-star"/></svg><svg class="ic"><use href="#i-star"/></svg><svg class="ic"><use href="#i-star"/></svg><svg class="ic"><use href="#i-star"/></svg></div></div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="two">
+          <div class="panel"><h3>Leasing pipeline <span class="mono">9 active</span></h3>
+            <div class="pipe">
+              <div class="pl"><div class="ico"><svg class="ic"><use href="#i-doc"/></svg></div><div class="m"><h5>Res. 506 · 2BR</h5><p>Application in review</p></div><span class="pill due">Screening</span></div>
+              <div class="pl"><div class="ico"><svg class="ic"><use href="#i-usercheck"/></svg></div><div class="m"><h5>Res. 812 · 1BR</h5><p>Approved · lease sent</p></div><span class="pill auto">E-sign</span></div>
+              <div class="pl"><div class="ico"><svg class="ic"><use href="#i-check"/></svg></div><div class="m"><h5>Res. 233 · Studio</h5><p>Signed · move-in Jun 15</p></div><span class="pill ok">Won</span></div>
+            </div>
+          </div>
+          <div class="panel"><h3>Inspections &amp; turns <span class="mono">6 scheduled</span></h3>
+            <div class="pipe">
+              <div class="pl"><div class="ico"><svg class="ic"><use href="#i-clipboard"/></svg></div><div class="m"><h5>Res. 233 · move-in</h5><p>Checklist · 18 items</p></div><span class="n">Jun 14</span></div>
+              <div class="pl"><div class="ico"><svg class="ic"><use href="#i-refresh"/></svg></div><div class="m"><h5>Res. 419 · unit turn</h5><p>Paint · clean · punch</p></div><span class="pill due">In turn</span></div>
+              <div class="pl"><div class="ico"><svg class="ic"><use href="#i-pie"/></svg></div><div class="m"><h5>Owner statements</h5><p>May · ready to send</p></div><span class="pill ok">Ready</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row2">
+          <div class="panel"><h3>Communications <span class="mono">inbox · 12 open</span></h3>
+            <div class="pipe">
+              <div class="pl"><div class="ico"><svg class="ic"><use href="#i-chat"/></svg></div><div class="m"><h5>Prospect · 2BR inquiry</h5><p>"Is the unit still available?"</p></div><span class="pill due">SMS</span></div>
+              <div class="pl"><div class="ico"><svg class="ic"><use href="#i-users"/></svg></div><div class="m"><h5>Res. 214 · Maria</h5><p>Package code — resolved by Oliver</p></div><span class="pill ok">Oliver</span></div>
+              <div class="pl"><div class="ico"><svg class="ic"><use href="#i-pie"/></svg></div><div class="m"><h5>Owner · Whitaker</h5><p>"Can I get the May statement?"</p></div><span class="pill auto">Email</span></div>
+              <div class="pl"><div class="ico"><svg class="ic"><use href="#i-calendar"/></svg></div><div class="m"><h5>Prospect · tour request</h5><p>"Saturday 11am work?"</p></div><span class="pill auto">Portal</span></div>
+            </div>
+          </div>
+          <div class="panel"><h3>Calendar <span class="mono">this week</span></h3>
+            <div class="pipe">
+              <div class="pl"><div class="ico"><svg class="ic"><use href="#i-refresh"/></svg></div><div class="m"><h5>Unit turn · Res. 419</h5><p>SparkleClean on site</p></div><span class="n">Tue</span></div>
+              <div class="pl"><div class="ico"><svg class="ic"><use href="#i-doc"/></svg></div><div class="m"><h5>Tour · 2BR prospect</h5><p>Self-guided, Oliver-hosted</p></div><span class="n">Wed</span></div>
+              <div class="pl"><div class="ico"><svg class="ic"><use href="#i-clipboard"/></svg></div><div class="m"><h5>Move-in inspection · 233</h5><p>Rooftop social 6pm</p></div><span class="n">Thu</span></div>
+              <div class="pl"><div class="ico"><svg class="ic"><use href="#i-wind"/></svg></div><div class="m"><h5>HVAC visit · #418</h5><p>Luis · 9–11am</p></div><span class="n">Fri</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="two">
+          <div class="panel"><h3>Supplies <span class="mono">4 low</span></h3>
+            <div class="pipe">
+              <div class="pl"><div class="ico"><svg class="ic"><use href="#i-cart"/></svg></div><div class="m"><h5>HVAC filters 20×25</h5><p>6 left · par 10</p></div><span class="pill late">Low</span></div>
+              <div class="pl"><div class="ico"><svg class="ic"><use href="#i-cart"/></svg></div><div class="m"><h5>Toilet flappers</h5><p>3 left · par 8</p></div><span class="pill late">Low</span></div>
+              <div class="pl"><div class="ico"><svg class="ic"><use href="#i-cart"/></svg></div><div class="m"><h5>LED bulbs</h5><p>42 in stock</p></div><span class="pill ok">OK</span></div>
+            </div>
+            <div style="margin-top:12px;font-size:12px;color:var(--ink-2);font-weight:600"><b style="color:var(--gold-deep)">Oliver</b> auto-reorders anything below par.</div>
+          </div>
+          <div class="panel"><h3>Vendors <span class="mono">approved</span></h3>
+            <div class="pipe">
+              <div class="pl"><div class="ico"><svg class="ic"><use href="#i-toolbox"/></svg></div><div class="m"><h5>Luis · HVAC</h5><p>Rated <span class="rate"><svg class="ic"><use href="#i-star"/></svg></span> 4.9 · 61 jobs</p></div><span class="pill ok">COI valid</span></div>
+              <div class="pl"><div class="ico"><svg class="ic"><use href="#i-toolbox"/></svg></div><div class="m"><h5>Marcus · Plumbing</h5><p>Rated <span class="rate"><svg class="ic"><use href="#i-star"/></svg></span> 4.7</p></div><span class="pill ok">COI valid</span></div>
+              <div class="pl"><div class="ico"><svg class="ic"><use href="#i-toolbox"/></svg></div><div class="m"><h5>GreenScape · Landscaping</h5><p>Weekly service</p></div><span class="pill due">COI 30d</span></div>
+            </div>
+            <div style="margin-top:12px;font-size:12px;color:var(--ink-2);font-weight:600"><b style="color:var(--gold-deep)">Oliver</b> flags expiring insurance before it lapses.</div>
+          </div>
+        </div>
+
+        <div class="broadcast">
+          <div style="position:relative;z-index:1"><div class="h disp">Broadcast to residents</div><div class="s">One message → all 312 residences, by building, or to anyone late on rent.</div></div>
+          <div class="btn gold" style="pointer-events:none">Compose <svg class="ic"><use href="#i-mega"/></svg></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FIELD -->
+<section class="view" id="field">
+  <div class="wrap sec-intro">
+    <hr class="hr-gold" />
+    <span class="eyebrow">For the Field</span>
+    <h1 class="disp">Techs, cleaners &amp; inspectors — one app for the work itself.</h1>
+  </div>
+  <div class="wrap phones">
+    <!-- TODAY -->
+    <div class="phone">
+      <div class="plabel"><b>Today's jobs</b><span>assigned &amp; routed by oliver</span></div>
+      <div class="device"><div class="screen"><div class="notch"></div>
+        <div class="s-top"><div class="hi">Good morning</div><div class="who">Luis · Maintenance</div></div>
+        <div class="s-body">
+          <div class="c2 dk"><div style="display:flex;justify-content:space-between;align-items:center">
+            <div><div style="font-weight:700;color:#fff;font-size:13.5px">5 jobs today</div><div style="font-size:11.5px;color:var(--dark-ink-2)">2 urgent · ~6 hrs · 4 buildings</div></div>
+            <div class="disp" style="font-size:30px;color:var(--gold-2)">5</div></div></div>
+          <div class="c2" style="margin-bottom:0">
+            <div class="item"><div class="th" style="background:var(--late-soft);color:var(--late)"><svg class="ic"><use href="#i-wind"/></svg></div><div style="flex:1"><h5>#418 · AC not cooling</h5><p>Res. 214 · <b style="color:var(--late)">Urgent</b> · 9:00am</p></div><span class="pill late">Start</span></div>
+            <div class="item"><div class="th" style="background:var(--info-soft);color:var(--info)"><svg class="ic"><use href="#i-drop"/></svg></div><div style="flex:1"><h5>#1102 · Faucet drip</h5><p>Res. 402 · 10:30am</p></div><span class="pill auto">Next</span></div>
+            <div class="item"><div class="th" style="background:var(--gold-soft);color:var(--gold-deep)"><svg class="ic"><use href="#i-clipboard"/></svg></div><div style="flex:1"><h5>Move-in inspection</h5><p>Res. 233 · 1:00pm</p></div><span class="pill due">Scheduled</span></div>
+            <div class="item"><div class="th" style="background:var(--paid-soft);color:var(--paid)"><svg class="ic"><use href="#i-wrench"/></svg></div><div style="flex:1"><h5>#815 · Door lock</h5><p>Res. 118 · 3:00pm</p></div><span class="pill auto">Later</span></div>
+          </div>
+        </div>
+      </div></div>
+    </div>
+
+    <!-- WORK ORDER -->
+    <div class="phone">
+      <div class="plabel"><b>Active work order</b><span>timer · parts · photos</span></div>
+      <div class="device"><div class="screen"><div class="notch"></div>
+        <div class="s-top"><div class="hi">Work order #418</div><div class="who">AC not cooling</div></div>
+        <div class="s-body">
+          <div class="c2">
+            <div class="rowl" style="border-top:none"><div class="ico"><svg class="ic"><use href="#i-building"/></svg></div><div style="flex:1">Res. 214 · Bldg A</div></div>
+            <div class="rowl"><div class="ico"><svg class="ic"><use href="#i-key"/></svg></div><div style="flex:1">Lobby code 4417 · resident notified</div></div>
+          </div>
+          <div class="c2 dk">
+            <div style="display:flex;align-items:center;gap:11px"><svg class="ic" style="font-size:20px;color:var(--gold-2)"><use href="#i-clock"/></svg>
+              <div><div class="disp" style="font-size:30px;color:#fff;letter-spacing:.02em">00:41:12</div><div style="font-size:11px;color:var(--dark-ink-2)">on the clock · started 9:04am</div></div></div>
+          </div>
+          <div class="c2">
+            <div style="font-weight:700;font-size:12.5px;margin-bottom:2px">Parts used</div>
+            <div class="rowl" style="border-top:none"><div style="flex:1">Run capacitor 45/5</div><span class="amt">×1</span></div>
+            <div class="rowl"><div style="flex:1">Filter 20×25</div><span class="amt">×1</span></div>
+            <div class="req" style="margin-top:8px"><svg class="ic"><use href="#i-plus"/></svg> Add part from supply</div>
+          </div>
+          <div class="c2"><div style="font-weight:700;font-size:12.5px;margin-bottom:8px">Photos</div>
+            <div style="display:flex;gap:8px"><div style="flex:1;height:52px;border-radius:10px;background:var(--gold-soft);display:grid;place-items:center;color:var(--gold-deep)"><svg class="ic"><use href="#i-camera"/></svg></div><div style="flex:1;height:52px;border-radius:10px;border:1px dashed var(--line-2);display:grid;place-items:center;color:var(--ink-3);font-size:11px">After</div></div></div>
+          <div class="paybtn" style="margin-bottom:0">Complete job <svg class="ic"><use href="#i-check"/></svg></div>
+        </div>
+      </div></div>
+    </div>
+
+    <!-- INSPECTION -->
+    <div class="phone">
+      <div class="plabel"><b>Inspection checklist</b><span>pass · fail · photo</span></div>
+      <div class="device"><div class="screen"><div class="notch"></div>
+        <div class="s-top"><div class="hi">Move-in inspection</div><div class="who">Res. 233</div></div>
+        <div class="s-body">
+          <div class="c2"><div style="display:flex;justify-content:space-between;align-items:center"><span style="font-weight:700;font-size:12.5px">Progress</span><span class="pill ok">12 / 18</span></div><div class="barm" style="margin-top:10px"><i style="width:66%"></i></div></div>
+          <div class="c2" style="margin-bottom:0">
+            <div class="item" style="border-top:none"><div class="th" style="background:var(--paid-soft);color:var(--paid)"><svg class="ic"><use href="#i-check"/></svg></div><div style="flex:1"><h5>Smoke &amp; CO detectors</h5><p>Pass · tested</p></div></div>
+            <div class="item"><div class="th" style="background:var(--paid-soft);color:var(--paid)"><svg class="ic"><use href="#i-camera"/></svg></div><div style="flex:1"><h5>Kitchen appliances</h5><p>Pass · photo added</p></div></div>
+            <div class="item"><div class="th" style="background:var(--late-soft);color:var(--late)"><svg class="ic"><use href="#i-alert"/></svg></div><div style="flex:1"><h5>Bathroom caulking</h5><p><b style="color:var(--late)">Flagged</b> · re-seal · photo</p></div></div>
+            <div class="item"><div class="th" style="background:var(--gold-soft);color:var(--gold-deep)"><svg class="ic"><use href="#i-star"/></svg></div><div style="flex:1"><h5>Flooring condition</h5><p>Rated 4 / 5</p></div></div>
+          </div>
+          <div class="paybtn">Submit inspection <svg class="ic"><use href="#i-arrow"/></svg></div>
+        </div>
+      </div></div>
+    </div>
+
+    <!-- ROUTE -->
+    <div class="phone">
+      <div class="plabel"><b>Today's route</b><span>ordered · turn-by-turn</span></div>
+      <div class="device"><div class="screen"><div class="notch"></div>
+        <div class="s-top"><div class="hi">Route</div><div class="who">4 stops · 6.2 mi</div></div>
+        <div class="s-body">
+          <div class="c2 dk" style="padding:0;overflow:hidden"><div style="height:120px;background:linear-gradient(135deg,#1d3b33,#0e221d);position:relative">
+            <svg viewBox="0 0 260 120" style="position:absolute;inset:0;width:100%;height:100%"><path d="M20 96 C 70 60, 110 96, 150 54 S 220 30, 240 26" fill="none" stroke="var(--gold)" stroke-width="2" stroke-dasharray="4 5"/><circle cx="20" cy="96" r="5" fill="var(--gold-2)"/><circle cx="150" cy="54" r="4" fill="#fff"/><circle cx="240" cy="26" r="4" fill="#fff"/></svg></div></div>
+          <div class="c2" style="margin-bottom:0">
+            <div class="item" style="border-top:none"><div class="th" style="background:var(--gold);color:var(--green-3)"><svg class="ic"><use href="#i-pin"/></svg></div><div style="flex:1"><h5>9:00 · Res. 214</h5><p>#418 AC · Bldg A</p></div><span class="pill late">Now</span></div>
+            <div class="item"><div class="th" style="background:var(--gold-soft);color:var(--gold-deep)"><svg class="ic"><use href="#i-pin"/></svg></div><div style="flex:1"><h5>10:30 · Res. 402</h5><p>#1102 Faucet · 4 min drive</p></div></div>
+            <div class="item"><div class="th" style="background:var(--gold-soft);color:var(--gold-deep)"><svg class="ic"><use href="#i-pin"/></svg></div><div style="flex:1"><h5>1:00 · Res. 233</h5><p>Move-in inspection</p></div></div>
+            <div class="item"><div class="th" style="background:var(--gold-soft);color:var(--gold-deep)"><svg class="ic"><use href="#i-pin"/></svg></div><div style="flex:1"><h5>3:00 · Res. 118</h5><p>#815 Door lock</p></div></div>
+          </div>
+        </div>
+      </div></div>
+    </div>
+  </div>
+</section>
+
+<div class="wrap foot">The Oliver · concept with sample data · built on a live, proven property-operations platform</div>
+
+<script>
+  const tabs=document.querySelectorAll('.tabs button'),views=document.querySelectorAll('.view');
+  function show(v){views.forEach(s=>s.classList.toggle('on',s.id===v));tabs.forEach(b=>b.classList.toggle('on',b.dataset.v===v));window.scrollTo({top:0,behavior:'smooth'})}
+  tabs.forEach(b=>b.addEventListener('click',()=>show(b.dataset.v)));
+  document.querySelectorAll('[data-jump]').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();show(a.dataset.jump)}));
+
+  // cost calculator
+  const RATE=5, FLAT=1450, MAXREF=10000;
+  const sl=document.getElementById('unitSlider');
+  function calc(){
+    const u=+sl.value, comp=u*RATE;
+    document.getElementById('cu').textContent=u.toLocaleString();
+    document.getElementById('compVal').textContent='$'+comp.toLocaleString();
+    document.getElementById('olvVal').textContent='$'+FLAT.toLocaleString();
+    document.getElementById('compBar').style.width=Math.min(100,comp/MAXREF*100)+'%';
+    document.getElementById('olvBar').style.width=(FLAT/MAXREF*100)+'%';
+    const diff=comp-FLAT;
+    document.getElementById('saveNote').innerHTML = diff>0
+      ? 'At '+u.toLocaleString()+' doors, that’s <b>$'+diff.toLocaleString()+'/month</b> less with The Oliver — and every door you add widens the gap.'
+      : 'Right about even here — but per-unit keeps climbing with every door, while The Oliver holds flat.';
+  }
+  sl.addEventListener('input',calc); calc();
+</script>
+</body>
+</html>

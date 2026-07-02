@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>The Oliver — Preview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@200;300;400;500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root{--green:#16302A;--green-2:#20423A;--green-3:#0E221D;--gl:rgba(226,214,180,.14);
+    --ivory:#F4F1E8;--card:#fff;--ink:#16302A;--ink-2:#5B6B63;--line:#E7E2D4;
+    --gold:#C4A962;--gold-2:#DEC988;--gold-deep:#A98D45;--dark-ink:#EDEADE;--dark-ink-2:#A4B2AB;}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:radial-gradient(130% 120% at 82% -10%,var(--green-2),var(--green) 46%,var(--green-3));
+    min-height:100vh;color:var(--dark-ink);font-family:'Manrope',sans-serif;-webkit-font-smoothing:antialiased;
+    display:flex;align-items:center;justify-content:center;padding:40px 24px;position:relative;overflow:hidden}
+  body::after{content:"";position:absolute;right:-160px;top:-140px;width:560px;height:560px;border:1px solid var(--gl);border-radius:50%}
+  .disp{font-family:'Jost',sans-serif;font-weight:300;letter-spacing:-.01em}
+  .wrap{max-width:760px;width:100%;position:relative;z-index:1}
+  .brand{display:flex;align-items:center;gap:14px;margin-bottom:34px}
+  .brand svg{width:46px;height:46px}
+  .wm .t{font-family:'Jost';font-size:13px;opacity:.7;display:block;margin-bottom:-3px}
+  .wm .o{font-family:'Jost';font-weight:300;font-size:24px;letter-spacing:.02em}
+  .eyebrow{font-family:'Jost';font-weight:500;font-size:11.5px;letter-spacing:.32em;text-transform:uppercase;color:var(--gold-2)}
+  h1{font-family:'Jost';font-weight:200;font-size:clamp(30px,5vw,46px);line-height:1.06;letter-spacing:-.02em;margin:14px 0 12px;color:#fff}
+  .sub{color:var(--dark-ink-2);font-size:16px;max-width:52ch;line-height:1.6}
+  .cards{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:38px}
+  a.card{display:block;background:rgba(255,255,255,.04);border:1px solid var(--gl);border-radius:18px;padding:26px;
+    text-decoration:none;color:var(--dark-ink);transition:.25s}
+  a.card:hover{background:rgba(196,169,98,.1);border-color:rgba(196,169,98,.4);transform:translateY(-3px)}
+  a.card .n{font-family:'Jost';font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold-2)}
+  a.card h2{font-family:'Jost';font-weight:300;font-size:23px;color:#fff;margin:10px 0 8px}
+  a.card p{font-size:13.5px;color:var(--dark-ink-2);line-height:1.55}
+  a.card .go{display:inline-flex;align-items:center;gap:8px;margin-top:16px;color:var(--gold-2);font-weight:600;font-size:13.5px}
+  .foot{margin-top:34px;font-family:'Jost';font-size:12px;letter-spacing:.04em;color:var(--dark-ink-2)}
+  @media(max-width:620px){.cards{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="brand">
+      <svg viewBox="0 0 44 44"><circle cx="22" cy="22" r="20.4" fill="none" stroke="#C4A962" stroke-width="1.1"/><circle cx="17.6" cy="22" r="10" fill="#F4F1E8"/><path d="M17.6 12a10 10 0 0 1 0 20z" fill="#C4A962"/></svg>
+      <span class="wm"><span class="t">the</span><span class="o">Oliver</span></span>
+    </div>
+    <span class="eyebrow">Concept preview · for review</span>
+    <h1 class="disp">A property platform — residents, office &amp; field, in one hub.</h1>
+    <p class="sub">Two pieces to look at. Open either in any web browser — no install needed.</p>
+    <div class="cards">
+      <a class="card" href="apartment-hub-mockup.html">
+        <div class="n">Interactive mockup</div>
+        <h2 class="disp">The Hub</h2>
+        <p>Click the tabs — Overview, Residents, Office, Field. Drag the cost slider.</p>
+        <span class="go">Open →</span>
+      </a>
+      <a class="card" href="vs-alfred-onepager.html">
+        <div class="n">One-pager</div>
+        <h2 class="disp">How it compares</h2>
+        <p>The Oliver vs. AppFolio vs. Hello Alfred — features, pricing model, and how it's built.</p>
+        <span class="go">Open →</span>
+      </a>
+    </div>
+    <div class="foot">Concept with sample data · built on a live, proven property-operations platform.</div>
+  </div>
+</body>
+</html>
